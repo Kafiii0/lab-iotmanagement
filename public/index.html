@@ -1,0 +1,1474 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Laboratorium Internet of Things - Telkom University</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="icon" type="image/png" href="/assets/logo-iot-lab.png">
+</head>
+<body>
+
+  <!-- ================= TOP HEADER ================= -->
+  <header class="top-header no-print">
+    <div class="header-container">
+      <a href="#" class="brand-wrapper" data-view="catalog">
+        <img src="/assets/logo-iot-lab.png" alt="Logo IoT Lab Telkom University" class="brand-logo">
+        <div class="brand-divider"></div>
+        <div class="brand-text">
+          <h1>INTERNET OF THINGS LABORATORY</h1>
+          <p>Telkom University</p>
+        </div>
+      </a>
+
+      <!-- Clean Open Navigation -->
+      <nav class="main-nav">
+        <button class="nav-link active" data-view="catalog">
+          <span>Form Peminjaman</span>
+        </button>
+        <button class="nav-link" data-view="track">
+          <span>Pelacakan Status</span>
+        </button>
+        <button class="nav-link btn-admin-nav" data-view="admin">
+          <span>Pengelola</span>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ================= MOBILE BOTTOM NAV ================= -->
+  <nav class="mobile-nav-bar no-print">
+    <div class="mobile-nav-items">
+      <button class="mobile-nav-btn active" data-view="catalog">
+        <span>Form Pinjam</span>
+      </button>
+      <button class="mobile-nav-btn" data-view="track">
+        <span>Resi</span>
+      </button>
+      <button class="mobile-nav-btn" data-view="admin">
+        <span>Admin</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ================= MAIN CONTENT ================= -->
+  <main class="main-content">
+
+    <!-- VIEW 1: FORMULIR PEMINJAMAN LANGSUNG -->
+    <section id="view-catalog" class="view-section active">
+      <div class="card-form">
+        <div class="form-header">
+          <h2>Formulir Peminjaman Barang Lab IoT</h2>
+        </div>
+
+        <form id="formLoanRequest">
+          <div class="form-section-title">1. Data Peminjam</div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Nama Lengkap Peminjam <span class="req">*</span></label>
+              <input type="text" id="borrowerName" class="form-control" placeholder="Nama lengkap" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">NIM / NIP <span class="req">*</span></label>
+              <input type="text" id="borrowerNim" class="form-control" placeholder="Nomor identitas" required>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Kategori Peminjam <span class="req">*</span></label>
+              <select id="borrowerType" class="form-control" required>
+                <option value="ormawa">Ormawa / Himpunan / BEM</option>
+                <option value="ukm">Unit Kegiatan Mahasiswa (UKM)</option>
+                <option value="internal_lab">Internal Anggota / Asisten Lab IoT</option>
+                <option value="lab_lain">Laboratorium Lain</option>
+                <option value="mahasiswa_luar">Mahasiswa Tugas Akhir / Eksternal</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Nama Instansi / Ormawa <span class="req">*</span></label>
+              <input type="text" id="institutionName" class="form-control" placeholder="Nama instansi atau organisasi" required>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">No. WhatsApp <span class="req">*</span></label>
+              <input type="tel" id="borrowerWa" class="form-control" placeholder="08xxxxxxxxxx" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Email Student Kampus</label>
+              <input type="email" id="borrowerEmail" class="form-control" placeholder="email@student.telkomuniversity.ac.id">
+            </div>
+          </div>
+
+          <div class="form-section-title">2. Jadwal & Keperluan</div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Tanggal Pengambilan <span class="req">*</span></label>
+              <input type="date" id="borrowDate" class="form-control" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Tanggal Pengembalian <span class="req">*</span></label>
+              <input type="date" id="returnDate" class="form-control" required>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Keperluan Penggunaan Barang <span class="req">*</span></label>
+            <textarea id="borrowPurpose" class="form-control" rows="2" placeholder="Jelaskan peruntukan peminjaman barang" required></textarea>
+          </div>
+
+          <div class="form-section-title">3. Daftar Barang yang Dipinjam</div>
+          <div class="item-selector-box">
+            <div style="display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 1rem; flex-wrap: wrap;">
+              <div>
+                <label class="form-label" style="margin-bottom: 2px;">Pilih Barang dari Inventaris Lab</label>
+                <span style="font-size: 0.8rem; color: var(--slate-500);">Menampilkan seluruh komponen & peralatan yang tersedia untuk dipinjam.</span>
+              </div>
+              <button type="button" class="btn btn-secondary" id="btnOpenItemPickerModal" onclick="openItemPickerModal()" style="padding: 0.65rem 1.25rem; font-size: 0.86rem;">
+                + Tambah Barang
+              </button>
+            </div>
+
+            <table class="selected-items-table">
+              <thead>
+                <tr>
+                  <th style="width: 55px; text-align: center;">Foto</th>
+                  <th>Nama Barang</th>
+                  <th style="width: 140px; text-align: center;">Jumlah Pinjam</th>
+                  <th style="width: 80px; text-align: center;">Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="selectedItemsTableBody">
+                <tr>
+                  <td colspan="4" style="text-align: center; color: var(--slate-500); padding: 1.25rem;">
+                    Belum ada barang dipilih. Klik <strong>"+ Tambah Barang"</strong> di atas.
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="form-section-title">4. Dokumen Surat Resmi & Unggah Berkas</div>
+          <div style="background: #f0fdfa; border: 1px solid #99f6e4; padding: 1.15rem; border-radius: var(--radius-sm); margin-bottom: 1.25rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center; gap: 1rem; flex-wrap: wrap;">
+              <div>
+                <h4 style="font-size: 0.95rem; font-weight: 800; color: #005b82; margin-bottom: 0.25rem;">Generate Surat Peminjaman</h4>
+                <p style="font-size: 0.82rem; color: #334155; line-height: 1.4;">
+                  Sistem akan otomatis mengisi data peminjam, jadwal, daftar barang, serta kolom tanda tangan & nama laboran penanggung jawab.
+                </p>
+              </div>
+              <button type="button" id="btnPreviewDraftLetter" class="btn btn-secondary" style="padding: 0.65rem 1.35rem; font-size: 0.88rem;">
+                Generate Surat Peminjaman
+              </button>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Unggah Scan Surat Peminjaman (Ttd Basah) <span class="req">*</span></label>
+              <input type="file" id="formSignedDocInput" class="form-control" accept=".pdf,image/*" required>
+              <div class="form-hint">Cetak surat, tanda tangani basah, lalu unggah file (PDF/Gambar, maks. 10MB).</div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Unggah Scan KTM / Kartu Identitas (Opsional)</label>
+              <input type="file" id="formIdCardInput" class="form-control" accept=".pdf,image/*">
+              <div class="form-hint">Lampirkan KTM/Kartu Identitas penanggung jawab peminjaman.</div>
+            </div>
+          </div>
+
+          <div style="display: flex; justify-content: flex-end; margin-top: 1.5rem;">
+            <button type="submit" id="btnSubmitFullLoan" class="btn btn-primary" style="padding: 0.75rem 1.75rem; font-size: 0.92rem;">
+              Kirim Permohonan Peminjaman
+            </button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- VIEW 2: PELACAKAN STATUS -->
+    <section id="view-track" class="view-section">
+      <div class="track-hero-box no-print">
+        <h2 class="track-hero-title">Lacak Permohonan Peminjaman</h2>
+        <p class="track-hero-subtitle">Pantau progres verifikasi berkas resmi, persetujuan laboran, hingga jadwal pengambilan barang secara real-time.</p>
+        
+        <div class="track-search-card">
+          <div class="track-search-input-group">
+            <div class="track-search-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="4" width="18" height="16" rx="2"></rect>
+                <line x1="7" y1="8" x2="17" y2="8"></line>
+                <line x1="7" y1="12" x2="17" y2="12"></line>
+                <line x1="7" y1="16" x2="13" y2="16"></line>
+              </svg>
+            </div>
+            <input type="text" id="trackUniqueIdInput" class="track-search-input" placeholder="Masukkan ID Tiket (Contoh: IOT-REQ-202609-NIJK)" autocomplete="off" spellcheck="false">
+            <button type="button" id="btnTrackRequest" class="track-search-btn">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+              </svg>
+              <span>Lacak Tiket</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div id="trackResultContainer" class="track-result-wrapper">
+        <!-- Rendered dynamically -->
+      </div>
+    </section>
+
+    <!-- VIEW 3: ADMIN PENGELOLA -->
+    <section id="view-admin" class="view-section">
+
+      <!-- Login Card -->
+      <div id="adminLoginCard" class="login-page-wrapper" style="display: none;">
+        <div class="login-glow-blob blob-1"></div>
+        <div class="login-glow-blob blob-2"></div>
+
+        <div class="login-glass-card">
+          <div class="login-card-accent"></div>
+
+          <div class="login-header">
+            <div class="login-logo-box">
+              <img src="/assets/logo-iot-lab.png" alt="Logo IoT Lab Telkom University" class="login-logo-img">
+            </div>
+            <h2 class="login-title">Login Pengelola Lab</h2>
+            <p class="login-subtitle">Laboratorium Internet of Things • Telkom University</p>
+          </div>
+
+          <form id="formAdminLogin" class="login-form">
+            <div class="login-field-group">
+              <label for="adminUsername" class="login-field-label">Username Pengelola</label>
+              <div class="login-input-wrapper">
+                <span class="input-icon">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="12" cy="7" r="4"></circle>
+                  </svg>
+                </span>
+                <input type="text" id="adminUsername" class="login-input" value="admin_iot" placeholder="Masukkan username" required autocomplete="username">
+              </div>
+            </div>
+
+            <div class="login-field-group">
+              <label for="adminPassword" class="login-field-label">Kata Sandi</label>
+              <div class="login-input-wrapper">
+                <span class="input-icon">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                  </svg>
+                </span>
+                <input type="password" id="adminPassword" class="login-input" value="iotlabtelkom2026" placeholder="Masukkan kata sandi" required autocomplete="current-password">
+                <button type="button" id="btnTogglePassword" class="password-toggle-btn" title="Tampilkan / Sembunyikan Kata Sandi">
+                  <svg id="eyeIcon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                    <circle cx="12" cy="12" r="3"></circle>
+                  </svg>
+                </button>
+              </div>
+            </div>
+
+            <button type="submit" id="btnSubmitAdminLogin" class="login-submit-btn">
+              <span>Masuk Ke Dashboard</span>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+                <polyline points="12 5 19 12 12 19"></polyline>
+              </svg>
+            </button>
+          </form>
+
+        </div>
+      </div>
+
+      <!-- Dashboard Panel -->
+      <div id="adminDashboardCard" class="admin-dashboard-container" style="display: none;">
+        <div class="admin-layout-wrapper">
+          
+          <!-- SIDEBAR NAVIGATION (Desktop Left / Mobile Bottom Navbar) -->
+          <aside class="admin-sidebar">
+            <div class="admin-sidebar-profile">
+              <div class="admin-avatar-box">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+              </div>
+              <div class="admin-profile-details">
+                <h4 id="adminLoggedName" class="admin-profile-name">Laboran Utama</h4>
+                <span class="admin-profile-badge">Pengelola Lab IoT</span>
+              </div>
+            </div>
+
+            <nav class="admin-sidebar-menu">
+              <button class="admin-nav-item active btn-primary" data-admin-tab="loans">
+                <span class="admin-nav-icon">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                    <polyline points="14 2 14 8 20 8"></polyline>
+                    <line x1="16" y1="13" x2="8" y2="13"></line>
+                    <line x1="16" y1="17" x2="8" y2="17"></line>
+                  </svg>
+                </span>
+                <span class="admin-nav-label">Peminjaman</span>
+              </button>
+
+              <button class="admin-nav-item btn-outline" data-admin-tab="inventory">
+                <span class="admin-nav-icon">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                    <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                    <line x1="12" y1="22.08" x2="12" y2="12"></line>
+                  </svg>
+                </span>
+                <span class="admin-nav-label">Inventaris & Stok</span>
+              </button>
+
+              <button class="admin-nav-item btn-outline" data-admin-tab="cash">
+                <span class="admin-nav-icon">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="2" y="6" width="20" height="12" rx="2"></rect>
+                    <circle cx="12" cy="12" r="2"></circle>
+                    <path d="M6 12h.01M18 12h.01"></path>
+                  </svg>
+                </span>
+                <span class="admin-nav-label">Kas Lab & Target</span>
+              </button>
+
+              <button class="admin-nav-item btn-outline" data-admin-tab="finance">
+                <span class="admin-nav-icon">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="12" y1="1" x2="12" y2="23"></line>
+                    <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                  </svg>
+                </span>
+                <span class="admin-nav-label">Rekap Keuangan</span>
+              </button>
+            </nav>
+
+            <div class="admin-sidebar-footer">
+              <button id="btnAdminLogout" class="admin-logout-button">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                  <polyline points="16 17 21 12 16 7"></polyline>
+                  <line x1="21" y1="12" x2="9" y2="12"></line>
+                </svg>
+                <span>Keluar (Logout)</span>
+              </button>
+            </div>
+          </aside>
+
+          <!-- MAIN CONTENT VIEWPORT -->
+          <main class="admin-main-viewport">
+            <div class="admin-top-header">
+              <div>
+                <h2 id="adminActiveTabTitle" class="admin-dashboard-title">Daftar Permohonan Peminjaman</h2>
+                <p class="admin-dashboard-subtitle">Panel Pengelola Internet of Things Laboratory Telkom University</p>
+              </div>
+              <button id="btnAdminLogoutMobile" class="admin-logout-button-mobile" onclick="document.getElementById('btnAdminLogout').click()">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                  <polyline points="16 17 21 12 16 7"></polyline>
+                  <line x1="21" y1="12" x2="9" y2="12"></line>
+                </svg>
+                <span>Logout</span>
+              </button>
+            </div>
+
+            <!-- SUBTAB 1: LOANS MANAGEMENT -->
+            <div id="admin-tab-loans" class="admin-tab-pane">
+              <div class="card" style="padding: 0; overflow: hidden; border: 1px solid var(--border-color); border-radius: 16px; box-shadow: 0 4px 20px -5px rgba(15, 23, 42, 0.05);">
+                <div class="inventory-toolbar-header">
+                  <div class="inventory-header-info">
+                    <div style="display: flex; align-items: center; gap: 0.65rem;">
+                      <h3 class="inventory-header-title">Daftar Permohonan Peminjaman</h3>
+                      <span id="adminLoansCountBadge" class="inventory-count-pill">0 Permohonan</span>
+                    </div>
+                    <p class="inventory-header-desc">Verifikasi berkas surat, pantau jadwal peminjaman, serah terima alat dan pengembalian aset</p>
+                  </div>
+
+                  <div class="inventory-header-actions">
+                    <div class="inventory-search-box">
+                      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                      </svg>
+                      <input type="text" id="adminLoansSearchInput" placeholder="Cari tiket, peminjam, atau barang...">
+                    </div>
+
+                    <select id="adminLoansStatusFilter" class="inventory-filter-select">
+                      <option value="">Semua Status</option>
+                      <option value="MENUNGGU_VERIFIKASI">Menunggu Verifikasi</option>
+                      <option value="DISETUJUI">Disetujui</option>
+                      <option value="DIPINJAM">Sedang Dipinjam</option>
+                      <option value="SELESAI">Selesai (Kembali)</option>
+                      <option value="DITOLAK">Ditolak</option>
+                    </select>
+
+                    <button type="button" class="btn btn-outline btn-sm" onclick="loadAdminLoans()" title="Muat Ulang Data" style="padding: 0.55rem 0.85rem; border-radius: 10px; display: inline-flex; align-items: center; gap: 0.35rem;">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="23 4 23 10 17 10"></polyline>
+                        <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
+                      </svg>
+                      <span style="font-size: 0.82rem; font-weight: 700;">Refresh</span>
+                    </button>
+                  </div>
+                </div>
+
+                <div class="table-responsive">
+                  <table class="ledger-table" style="font-size: 0.84rem;">
+                    <thead>
+                      <tr>
+                        <th style="width: 170px;">NO. TIKET</th>
+                        <th>PEMINJAM</th>
+                        <th>RINGKASAN BARANG</th>
+                        <th style="width: 140px;">JADWAL PINJAM</th>
+                        <th style="width: 135px;">STATUS</th>
+                        <th style="width: 110px; text-align: center;">BERKAS</th>
+                        <th style="text-align: center; width: 145px;">AKSI</th>
+                      </tr>
+                    </thead>
+                    <tbody id="adminLoansTableBody">
+                      <!-- Rendered dynamically -->
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+        <!-- SUBTAB 2: INVENTORY MANAGEMENT -->
+        <div id="admin-tab-inventory" class="admin-tab-pane" style="display: none;">
+          <div class="card" style="padding: 0; overflow: hidden; border: 1px solid var(--border-color); border-radius: 16px; box-shadow: 0 4px 20px -5px rgba(15, 23, 42, 0.05);">
+            <div class="inventory-toolbar-header">
+              <div class="inventory-header-info">
+                <div style="display: flex; align-items: center; gap: 0.65rem;">
+                  <h3 class="inventory-header-title">Inventaris Barang Lab IoT</h3>
+                  <span id="inventoryCountBadge" class="inventory-count-pill">0 Barang</span>
+                </div>
+                <p class="inventory-header-desc">Katalog aset, modul mikrokontroler, sensor & instrumen laboratorium</p>
+              </div>
+
+              <div class="inventory-header-actions">
+                <div class="inventory-search-box">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                  </svg>
+                  <input type="text" id="adminInventorySearchInput" placeholder="Cari nama barang atau lokasi...">
+                </div>
+
+                <select id="adminInventoryCategoryFilter" class="inventory-filter-select">
+                  <option value="">Semua Kategori</option>
+                </select>
+
+                <button type="button" class="btn-add-inventory" onclick="document.getElementById('modalAddInventory').classList.add('active')">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="12" y1="5" x2="12" y2="19"></line>
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                  </svg>
+                  <span>Tambah Barang</span>
+                </button>
+              </div>
+            </div>
+            <div class="table-responsive">
+              <table class="ledger-table" style="font-size: 0.84rem;">
+                <thead>
+                  <tr>
+                    <th style="width: 55px; text-align: center;">FOTO</th>
+                    <th>NAMA BARANG</th>
+                    <th>LOKASI FISIK</th>
+                    <th style="text-align: center; width: 140px;">STOK</th>
+                    <th style="width: 130px;">IZIN PINJAM</th>
+                    <th style="text-align: center; width: 85px;">AKSI</th>
+                  </tr>
+                </thead>
+                <tbody id="adminInventoryTableBody">
+                  <!-- Rendered dynamically -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- SUBTAB 3: CASH & DYNAMIC TARGET MANAGEMENT -->
+        <div id="admin-tab-cash" class="admin-tab-pane" style="display: none;">
+
+          <!-- ================= LEVEL 1: OVERVIEW DAFTAR PERIODE KAS BULANAN ================= -->
+          <div id="cashViewPeriods" class="cash-view-pane">
+            <div class="card" style="padding: 0; overflow: hidden; border: 1px solid var(--border-color); border-radius: 16px; box-shadow: 0 4px 20px -5px rgba(15, 23, 42, 0.05); margin-bottom: 1.5rem;">
+              <div class="inventory-toolbar-header">
+                <div class="inventory-header-info">
+                  <div style="display: flex; align-items: center; gap: 0.65rem;">
+                    <h3 class="inventory-header-title">Rekapitulasi Kas Lab Bulanan</h3>
+                    <span id="cashPeriodsCountBadge" class="inventory-count-pill">0 Periode</span>
+                  </div>
+                  <p class="inventory-header-desc">Daftar rekap iuran kas bulanan. Klik <strong>"Lihat Detail Anggota"</strong> pada bulan untuk memeriksa siapa yang lunas dan belum bayar.</p>
+                </div>
+
+                <div class="inventory-header-actions">
+                  <div class="inventory-search-box">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <circle cx="11" cy="11" r="8"></circle>
+                      <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    </svg>
+                    <input type="text" id="adminCashPeriodSearchInput" placeholder="Cari nama bulan atau tahun...">
+                  </div>
+
+                  <button type="button" class="btn-add-inventory" onclick="openSetTargetModal()">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                      <line x1="12" y1="5" x2="12" y2="19"></line>
+                      <line x1="5" y1="12" x2="19" y2="12"></line>
+                    </svg>
+                    <span>Tambah / Atur Target Bulan</span>
+                  </button>
+                </div>
+              </div>
+
+              <div class="table-responsive">
+                <table class="ledger-table" style="font-size: 0.84rem;">
+                  <thead>
+                    <tr>
+                      <th style="width: 220px;">PERIODE BULAN</th>
+                      <th style="width: 140px; text-align: right;">TARGET / ANGGOTA</th>
+                      <th style="width: 150px; text-align: right;">TOTAL TERKUMPUL</th>
+                      <th style="width: 140px; text-align: right;">SISA TAGIHAN</th>
+                      <th style="width: 175px;">KEPATUHAN SETORAN</th>
+                      <th>RENCANA ALOKASI DANA</th>
+                      <th style="width: 175px; text-align: center;">AKSI</th>
+                    </tr>
+                  </thead>
+                  <tbody id="adminCashPeriodsTableBody">
+                    <!-- Rendered dynamically -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SUBTAB 4: TOTAL FINANCE & CASHFLOW LEDGER -->
+        <div id="admin-tab-finance" class="admin-tab-pane" style="display: none;">
+          <!-- 4-Stat Metric Summary Strip -->
+          <div class="cash-stats-grid" style="margin-top: 0; margin-bottom: 1.25rem;">
+            <div class="cash-stat-card">
+              <div class="cash-stat-label">
+                <span>Saldo Kas Lab Saat Ini</span>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--slate-500);"><rect x="2" y="5" width="20" height="14" rx="2"></rect><line x1="2" y1="10" x2="22" y2="10"></line></svg>
+              </div>
+              <div class="cash-stat-value" id="financeStatBalance" style="color: var(--navy);">Rp 0</div>
+              <div class="cash-stat-subtext">Akumulasi saldo kas bersih</div>
+            </div>
+
+            <div class="cash-stat-card">
+              <div class="cash-stat-label">
+                <span>Total Pemasukan Kumulatif</span>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--slate-500);"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg>
+              </div>
+              <div class="cash-stat-value" id="financeStatIncome" style="color: var(--navy);">Rp 0</div>
+              <div class="cash-stat-subtext" id="financeStatIncomeSub">Iuran kas + dana hibah masuk</div>
+            </div>
+
+            <div class="cash-stat-card">
+              <div class="cash-stat-label">
+                <span>Total Pengeluaran Kumulatif</span>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--slate-500);"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+              </div>
+              <div class="cash-stat-value" id="financeStatExpense" style="color: var(--navy);">Rp 0</div>
+              <div class="cash-stat-subtext">Belanja alat, komponen & operasional</div>
+            </div>
+
+            <div class="cash-stat-card">
+              <div class="cash-stat-label">
+                <span>Jumlah Transaksi</span>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--slate-500);"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+              </div>
+              <div class="cash-stat-value" id="financeStatCount" style="color: var(--navy);">0</div>
+              <div class="cash-stat-subtext">Catatan transaksi kas aktif</div>
+            </div>
+          </div>
+
+          <!-- Main Ledger Card -->
+          <div class="card" style="padding: 0; overflow: hidden; border: 1px solid var(--border-color); border-radius: 16px; box-shadow: 0 4px 20px -5px rgba(15, 23, 42, 0.05); margin-bottom: 1.5rem;">
+            <div class="inventory-toolbar-header" style="flex-wrap: wrap; gap: 0.85rem;">
+              <div class="inventory-header-info">
+                <div style="display: flex; align-items: center; gap: 0.65rem;">
+                  <h3 class="inventory-header-title">Buku Kas & Rekapitulasi Keuangan</h3>
+                  <span id="financeTrxCountBadge" class="inventory-count-pill">0 Transaksi</span>
+                </div>
+                <p class="inventory-header-desc">Pencatatan pembukuan kas komprehensif: iuran anggota, pemasukan hibah, dan belanja pengeluaran laboratorium.</p>
+              </div>
+
+              <div class="inventory-header-actions" style="flex-wrap: wrap;">
+                <div class="inventory-search-box">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                  </svg>
+                  <input type="text" id="financeSearchInput" placeholder="Cari uraian, pihak, metode...">
+                </div>
+
+                <select id="financeTypeFilter" class="inventory-filter-select">
+                  <option value="">Semua Transaksi</option>
+                  <option value="income_dues">Iuran Kas Anggota</option>
+                  <option value="income_other">Pemasukan Lain / Hibah</option>
+                  <option value="expense">Pengeluaran Operasional</option>
+                </select>
+
+                <input type="month" id="financeMonthFilter" class="inventory-filter-select" style="padding: 0.45rem 0.65rem;" title="Filter Bulan">
+
+                <button type="button" class="btn btn-outline btn-sm" onclick="openAddIncomeModal()" style="font-weight: 700; padding: 0.5rem 0.85rem; border-radius: 8px; display: inline-flex; align-items: center; gap: 0.4rem;">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                  <span>Catat Pemasukan</span>
+                </button>
+
+                <button type="button" class="btn btn-outline btn-sm" onclick="openAddExpenseModal()" style="font-weight: 700; padding: 0.5rem 0.85rem; border-radius: 8px; display: inline-flex; align-items: center; gap: 0.4rem;">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                  <span>Catat Pengeluaran</span>
+                </button>
+
+                <button type="button" class="btn btn-primary btn-sm" onclick="openFinancePdfModal()" style="font-weight: 800; padding: 0.5rem 1rem; border-radius: 8px; display: inline-flex; align-items: center; gap: 0.4rem;">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M6 9V2h12v7"></path><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+                  <span>Ekspor PDF Laporan</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="table-responsive">
+              <table class="ledger-table" style="font-size: 0.84rem;">
+                <thead>
+                  <tr>
+                    <th style="width: 45px; text-align: center; white-space: nowrap;">NO</th>
+                    <th style="width: 105px; white-space: nowrap;">TANGGAL</th>
+                    <th style="width: 130px; white-space: nowrap;">JENIS</th>
+                    <th style="min-width: 280px;">KATEGORI & URAIAN TRANSAKSI</th>
+                    <th style="width: 100px; white-space: nowrap;">METODE</th>
+                    <th style="width: 130px; text-align: right; white-space: nowrap;">MASUK (+)</th>
+                    <th style="width: 130px; text-align: right; white-space: nowrap;">KELUAR (-)</th>
+                    <th style="width: 135px; text-align: right; white-space: nowrap;">SALDO</th>
+                    <th style="width: 80px; text-align: center; white-space: nowrap;">BUKTI</th>
+                  </tr>
+                </thead>
+                <tbody id="adminFinanceTableBody">
+                  <!-- Rendered dynamically -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+</section>
+
+  </main>
+
+  <!-- ================= MODAL: DETAIL PERMOHONAN PEMINJAMAN (ADMIN POPUP) ================= -->
+  <div id="modalAdminLoanDetail" class="modal-overlay">
+    <div class="modal-box" style="max-width: 860px; width: 95%; max-height: 90vh;">
+      <div class="modal-header">
+        <div style="display: flex; align-items: center; gap: 0.75rem;">
+          <div style="width: 40px; height: 40px; border-radius: 10px; background: rgba(0, 91, 130, 0.08); color: var(--navy); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+              <polyline points="14 2 14 8 20 8"></polyline>
+              <line x1="16" y1="13" x2="8" y2="13"></line>
+              <line x1="16" y1="17" x2="8" y2="17"></line>
+              <polyline points="10 9 9 9 8 9"></polyline>
+            </svg>
+          </div>
+          <div>
+            <h3 style="font-size: 1.1rem; font-weight: 800; color: var(--slate-900); margin: 0;">
+              Detail Permohonan Peminjaman
+            </h3>
+            <p style="font-size: 0.78rem; color: var(--slate-500); margin: 2px 0 0 0;">
+              No. Tiket: <strong id="adminLoanModalTicketBadge" style="font-family: 'JetBrains Mono', monospace; color: var(--navy);">-</strong>
+            </p>
+          </div>
+        </div>
+        <div style="display: flex; align-items: center; gap: 0.75rem;">
+          <div id="adminLoanModalStatusBadge"></div>
+          <button type="button" class="modal-close" data-close-modal title="Tutup">&times;</button>
+        </div>
+      </div>
+
+      <div class="modal-body" id="adminLoanDetailModalBody" style="padding: 1.5rem; overflow-y: auto;">
+        <!-- Rendered dynamically -->
+      </div>
+
+      <div class="modal-footer" id="adminLoanDetailModalFooter" style="padding: 0.85rem 1.5rem; background: var(--slate-50); border-top: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center;">
+        <span style="font-size: 0.78rem; color: var(--slate-500);">
+          IoT Laboratory System • Telkom University
+        </span>
+        <button type="button" class="btn btn-outline" data-close-modal>Tutup</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= MODAL 1: DETAIL BARANG INVENTARIS ================= -->
+  <div id="modalItemDetail" class="modal-overlay">
+    <div class="modal-box" style="max-width: 820px; width: 94%;">
+      <div class="modal-header">
+        <div style="display: flex; align-items: center; gap: 0.6rem;">
+          <div style="width: 8px; height: 8px; border-radius: 50%; background: var(--primary);"></div>
+          <h3 style="font-size: 1.05rem; font-weight: 800; color: var(--slate-900); margin: 0;">Detail Spesifikasi Barang</h3>
+        </div>
+        <button class="modal-close">&times;</button>
+      </div>
+      <div class="modal-body" id="itemDetailModalBody" style="padding: 1.5rem;">
+        <!-- Rendered dynamically -->
+      </div>
+      <div class="modal-footer" style="padding: 0.85rem 1.5rem; background: var(--slate-50); border-top: 1px solid var(--border-color);">
+        <button type="button" class="btn btn-outline" data-close-modal>Tutup</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= MODAL 2: OFFICIAL LETTER PRINT & PREVIEW ================= -->
+  <div id="modalOfficialLetter" class="modal-overlay">
+    <div class="modal-box" style="max-width: 860px;">
+      <div class="modal-header no-print">
+        <div>
+          <h3>Surat Peminjaman Resmi Siap Cetak</h3>
+          <p style="font-size: 0.8rem; color: var(--slate-500);">
+            Unique ID: <strong id="letterModalUniqueIdBadge" style="color: var(--navy); font-family: 'JetBrains Mono', monospace;">-</strong>
+          </p>
+        </div>
+        <button class="modal-close">&times;</button>
+      </div>
+
+      <div class="modal-body" style="background: var(--slate-200); padding: 1.5rem;">
+        <div id="officialLetterRenderContainer">
+          <!-- Rendered dynamically -->
+        </div>
+      </div>
+
+      <div class="modal-footer no-print">
+        <button type="button" class="btn btn-outline" data-close-modal>Tutup</button>
+        <button type="button" class="btn btn-secondary" onclick="printOfficialLetter()">
+          Cetak / Unduh PDF Surat
+        </button>
+        <button type="button" class="btn btn-primary" onclick="proceedToUploadModal()">
+          Lanjut Upload Berkas Bertanda Tangan
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= MODAL 3: UPLOAD SIGNED DOCUMENT ================= -->
+  <div id="modalUploadSigned" class="modal-overlay">
+    <div class="modal-box" style="max-width: 500px;">
+      <div class="modal-header">
+        <h3>Upload Surat Bertanda Tangan</h3>
+        <button class="modal-close">&times;</button>
+      </div>
+      <form id="formUploadSignedLetter">
+        <div class="modal-body">
+          <input type="hidden" id="uploadTargetUniqueId">
+
+          <div style="background: var(--primary-subtle); padding: 0.75rem 1rem; border-radius: var(--radius-sm); border: 1px solid var(--primary-light); margin-bottom: 1rem;">
+            <div style="font-size: 0.75rem; color: var(--navy); font-weight: 800; text-transform: uppercase;">Unique Tracking ID</div>
+            <strong id="uploadUniqueIdDisplay" style="font-size: 1.1rem; color: var(--slate-900); font-family: 'JetBrains Mono', monospace;">-</strong>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Foto / Scan Surat Bertanda Tangan Basah <span class="req">*</span></label>
+            <input type="file" id="fileSignedLetter" class="form-control" accept="image/*,.pdf" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Foto KTM / Identitas</label>
+            <input type="file" id="fileKtm" class="form-control" accept="image/*,.pdf">
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline" data-close-modal>Batal</button>
+          <button type="submit" id="btnSubmitUpload" class="btn btn-primary">
+            Kirim Berkas Peminjaman
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ================= MODAL 4: TAMBAH INVENTARIS ================= -->
+  <div id="modalAddInventory" class="modal-overlay">
+    <div class="modal-box" style="max-width: 560px;">
+      <div class="modal-header">
+        <h3>Tambah Barang Inventaris</h3>
+        <button class="modal-close">&times;</button>
+      </div>
+      <form id="formAddInventoryItem">
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="form-label">Nama Barang <span class="req">*</span></label>
+            <input type="text" id="newItemName" class="form-control" placeholder="Nama barang" required>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Kategori <span class="req">*</span></label>
+              <input type="text" id="newItemCategory" class="form-control" placeholder="Mikrokontroler / Sensor / Alat" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Lokasi Fisik di Lab <span class="req">*</span></label>
+              <input type="text" id="newItemLocation" class="form-control" placeholder="Rak / Boks / Meja" required>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Jumlah Total Stok <span class="req">*</span></label>
+              <input type="number" id="newItemStock" class="form-control" value="5" min="1" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Satuan</label>
+              <input type="text" id="newItemUnit" class="form-control" value="Unit" required>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Kondisi</label>
+              <select id="newItemCondition" class="form-control">
+                <option value="Baik">Baik</option>
+                <option value="Rusak Ringan">Rusak Ringan</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Kebijakan Peminjaman <span class="req">*</span></label>
+              <select id="newItemLoanable" class="form-control" required>
+                <option value="all">Boleh Dipinjam (Umum & Internal)</option>
+                <option value="internal_only">Khusus Internal Lab IoT</option>
+                <option value="restricted">Aset Tetap (Hanya Digunakan di Ruang Lab)</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Foto / Gambar Barang Aset</label>
+            <input type="file" id="newItemImageFile" class="form-control" accept="image/*">
+            <input type="url" id="newItemImageUrl" class="form-control" placeholder="Atau tempel URL gambar (https://...)" style="margin-top: 0.35rem;">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Deskripsi Singkat</label>
+            <textarea id="newItemDesc" class="form-control" rows="2" placeholder="Spesifikasi teknis"></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline" data-close-modal>Batal</button>
+          <button type="submit" class="btn btn-primary">Simpan ke Inventaris</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ================= MODAL 4B: EDIT INVENTARIS ================= -->
+  <div id="modalEditInventory" class="modal-overlay">
+    <div class="modal-box" style="max-width: 600px; width: 92%;">
+      <div class="modal-header">
+        <div style="display: flex; align-items: center; gap: 0.6rem;">
+          <div style="width: 8px; height: 8px; border-radius: 50%; background: var(--primary);"></div>
+          <h3 style="font-size: 1.05rem; font-weight: 800; color: var(--slate-900); margin: 0;">Edit Data Aset Inventaris</h3>
+        </div>
+        <button class="modal-close">&times;</button>
+      </div>
+      <form id="formEditInventoryItem">
+        <input type="hidden" id="editItemId">
+        <div class="modal-body" style="padding: 1.25rem 1.5rem;">
+          <div class="form-group">
+            <label class="form-label">Nama Barang <span class="req">*</span></label>
+            <input type="text" id="editItemName" class="form-control" placeholder="Nama barang" required>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Kategori <span class="req">*</span></label>
+              <input type="text" id="editItemCategory" class="form-control" placeholder="Mikrokontroler / Sensor / Alat" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Lokasi Fisik di Lab <span class="req">*</span></label>
+              <input type="text" id="editItemLocation" class="form-control" placeholder="Rak / Boks / Meja" required>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Jumlah Total Stok <span class="req">*</span></label>
+              <input type="number" id="editItemStock" class="form-control" min="1" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Satuan</label>
+              <input type="text" id="editItemUnit" class="form-control" value="Unit" required>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Kondisi</label>
+              <select id="editItemCondition" class="form-control">
+                <option value="Baik">Baik</option>
+                <option value="Rusak Ringan">Rusak Ringan</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Kebijakan Peminjaman <span class="req">*</span></label>
+              <select id="editItemLoanable" class="form-control" required>
+                <option value="all">Boleh Dipinjam (Umum & Internal)</option>
+                <option value="internal_only">Khusus Internal Lab IoT</option>
+                <option value="restricted">Aset Tetap (Hanya Digunakan di Ruang Lab)</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Foto / Gambar Barang</label>
+            <div style="display: flex; gap: 0.85rem; align-items: center; margin-bottom: 0.35rem;">
+              <img id="editItemCurrentImg" src="/assets/logo-iot-lab.png" style="width: 48px; height: 48px; object-fit: cover; border-radius: 8px; border: 1px solid var(--border-color); background: var(--slate-100);">
+              <div style="flex: 1;">
+                <input type="file" id="editItemImageFile" class="form-control" accept="image/*">
+                <input type="url" id="editItemImageUrl" class="form-control" placeholder="Atau tempel URL gambar baru (https://...)" style="margin-top: 0.35rem;">
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Deskripsi & Spesifikasi Teknis</label>
+            <textarea id="editItemDesc" class="form-control" rows="2" placeholder="Spesifikasi teknis alat"></textarea>
+          </div>
+        </div>
+        <div class="modal-footer" style="padding: 0.85rem 1.5rem; background: var(--slate-50); border-top: 1px solid var(--border-color);">
+          <button type="button" class="btn btn-outline" data-close-modal>Batal</button>
+          <button type="submit" class="btn btn-primary" id="btnSaveEditInventory">Simpan Perubahan</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ================= MODAL 5: QR CODE BARANG ================= -->
+  <div id="modalItemQr" class="modal-overlay">
+    <div class="modal-box" style="max-width: 420px;">
+      <div class="modal-header no-print">
+        <h3>Label QR Code Inventaris</h3>
+        <button class="modal-close">&times;</button>
+      </div>
+      <div class="modal-body" id="qrModalContent">
+        <!-- Rendered dynamically -->
+      </div>
+      <div class="modal-footer no-print">
+        <button type="button" class="btn btn-outline" data-close-modal>Tutup</button>
+        <button type="button" class="btn btn-primary" onclick="printQrLabel()">Cetak Label</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= MODAL 6: VISUAL ITEM PICKER (KATALOG POPUP) ================= -->
+  <div id="modalItemPicker" class="modal-overlay">
+    <div class="modal-box" style="max-width: 860px; width: 95%;">
+      <div class="modal-header">
+        <div>
+          <h3>Pilih Barang Inventaris Lab IoT</h3>
+          <p style="font-size: 0.78rem; color: var(--slate-500);">Hanya menampilkan komponen & peralatan yang tersedia untuk dipinjam</p>
+        </div>
+        <button class="modal-close">&times;</button>
+      </div>
+      <div class="modal-body" style="padding: 1rem 1.25rem;">
+        <!-- Filters inside modal -->
+        <div style="display: flex; gap: 0.75rem; margin-bottom: 1.25rem; flex-wrap: wrap;">
+          <input type="text" id="pickerSearchInput" class="form-control" placeholder="Cari nama barang..." style="flex: 1; min-width: 200px;">
+          <select id="pickerCategoryFilter" class="form-control" style="width: 200px;">
+            <option value="">Semua Kategori</option>
+          </select>
+        </div>
+
+        <!-- Grid of visual card blocks -->
+        <div id="pickerGridContainer" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 1rem; max-height: 55vh; overflow-y: auto; padding-right: 4px;">
+          <!-- Rendered dynamically -->
+        </div>
+      </div>
+      <div class="modal-footer" style="display: flex; justify-content: space-between; align-items: center;">
+        <span id="pickerSummaryText" style="font-size: 0.88rem; font-weight: 700; color: var(--navy);">0 Barang Dipilih</span>
+        <button type="button" class="btn btn-primary" data-close-modal style="padding: 0.6rem 1.75rem;">Selesai (Done)</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= MODAL 7: ATUR TARGET KAS BULANAN ================= -->
+  <div id="modalSetCashTarget" class="modal-overlay">
+    <div class="modal-box" style="max-width: 520px; width: 94%;">
+      <div class="modal-header">
+        <div style="display: flex; align-items: center; gap: 0.75rem;">
+          <div style="width: 36px; height: 36px; border-radius: 10px; background: rgba(0, 91, 130, 0.08); color: var(--navy); display: flex; align-items: center; justify-content: center;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+              <line x1="16" y1="2" x2="16" y2="6"></line>
+              <line x1="8" y1="2" x2="8" y2="6"></line>
+              <line x1="3" y1="10" x2="21" y2="10"></line>
+            </svg>
+          </div>
+          <div>
+            <h3 style="font-size: 1.05rem; font-weight: 800; color: var(--slate-900); margin: 0;">Tambah / Atur Target Bulan</h3>
+            <p style="font-size: 0.76rem; color: var(--slate-500); margin: 2px 0 0 0;">Tentukan periode bulan pencatatan kas dan besaran target iuran</p>
+          </div>
+        </div>
+        <button type="button" class="modal-close" data-close-modal title="Tutup Popup">&times;</button>
+      </div>
+      <form id="formUpdateDynamicTarget">
+        <div class="modal-body" style="padding: 1.4rem;">
+          <div class="form-group" style="margin-bottom: 1.25rem;">
+            <label class="form-label">Pilih Periode Bulan & Tahun <span class="req" style="color: var(--kredit-red);">*</span></label>
+            <input type="month" id="adminCashMonth" class="form-control" required style="font-size: 0.95rem;">
+            <span style="font-size: 0.74rem; color: var(--slate-500); margin-top: 4px; display: block;">Pilih bulan yang ingin dicatat kasnya (misal: Oktober, November, Desember).</span>
+          </div>
+          <div class="form-group" style="margin-bottom: 1.25rem;">
+            <label class="form-label">Target Kas per Anggota (Rp) <span class="req" style="color: var(--kredit-red);">*</span></label>
+            <input type="number" id="targetAmountInput" class="form-control" placeholder="20000" min="0" step="1000" required style="font-family: 'JetBrains Mono', monospace; font-size: 1.05rem; font-weight: 800; color: var(--slate-900);">
+            <span style="font-size: 0.74rem; color: var(--slate-500); margin-top: 4px; display: block;">Nominal iuran wajib per anggota pada bulan ini. Masukkan 0 jika bebas iuran.</span>
+          </div>
+          <div class="form-group" style="margin-bottom: 0.5rem;">
+            <label class="form-label">Rencana Alokasi / Catatan Penggunaan Kas (Opsional)</label>
+            <input type="text" id="targetNotesInput" class="form-control" placeholder="Contoh: Pengadaan Alat Solder & Restock Komponen">
+          </div>
+        </div>
+        <div class="modal-footer" style="padding: 0.85rem 1.5rem; background: var(--slate-50); border-top: 1px solid var(--border-color); display: flex; justify-content: flex-end; gap: 0.65rem;">
+          <button type="button" class="btn btn-outline" data-close-modal>Batal</button>
+          <button type="submit" class="btn btn-primary" id="btnSaveTargetSubmit" style="font-weight: 800; padding: 0.55rem 1.25rem;">Simpan Target Bulan</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ================= MODAL 8: POPUP DAFTAR ANGGOTA & RINCIAN KAS PER BULAN ================= -->
+  <div id="modalMonthCashDetail" class="modal-overlay">
+    <div class="modal-box" style="max-width: 1200px; width: 96%; max-height: 90vh;">
+      <div class="modal-header">
+        <div style="display: flex; align-items: center; gap: 0.85rem;">
+          <div class="period-month-icon" style="width: 42px; height: 42px; border-radius: 12px; background: rgba(0, 91, 130, 0.08); color: var(--navy); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+              <line x1="16" y1="2" x2="16" y2="6"></line>
+              <line x1="8" y1="2" x2="8" y2="6"></line>
+              <line x1="3" y1="10" x2="21" y2="10"></line>
+            </svg>
+          </div>
+          <div>
+            <h3 id="activeMonthTitle" style="font-size: 1.15rem; font-weight: 800; color: var(--slate-900); margin: 0;">
+              Rincian Iuran Kas Anggota
+            </h3>
+            <div class="month-detail-subtitle" style="margin-top: 3px; font-size: 0.82rem; color: var(--slate-500); display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
+              <span id="activeMonthTargetTag" style="font-weight: 700; color: var(--navy); font-family: 'JetBrains Mono', monospace;">Target: Rp 20.000 / Anggota</span>
+              <span>•</span>
+              <span id="activeMonthNotesText" style="color: var(--slate-600);">Rencana Alokasi: -</span>
+            </div>
+          </div>
+        </div>
+
+        <div style="display: flex; align-items: center; gap: 0.65rem;">
+          <button type="button" class="btn btn-outline btn-sm" onclick="editCurrentMonthTarget()" style="font-weight: 700; padding: 0.45rem 0.85rem; border-radius: 8px; display: inline-flex; align-items: center; gap: 0.4rem;">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+              <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+            </svg>
+            <span>Edit Target</span>
+          </button>
+          <button type="button" class="modal-close" data-close-modal title="Tutup Popup">&times;</button>
+        </div>
+      </div>
+
+      <div class="modal-body" style="padding: 1.25rem 1.5rem; overflow-y: auto;">
+        <!-- 4-Stat Metric Summary Strip -->
+        <div class="cash-stats-grid" style="margin-top: 0; margin-bottom: 1.25rem;">
+          <div class="cash-stat-card">
+            <div class="cash-stat-label">
+              <span>Target / Anggota</span>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--slate-500);"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+            </div>
+            <div class="cash-stat-value" id="statCashTargetPerMember" style="color: var(--navy);">Rp 0</div>
+            <div class="cash-stat-subtext" id="statCashTotalMembers">Dari 0 Anggota Lab</div>
+          </div>
+
+          <div class="cash-stat-card">
+            <div class="cash-stat-label">
+              <span>Total Terkumpul</span>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--slate-500);"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg>
+            </div>
+            <div class="cash-stat-value" id="statCashTotalPaid" style="color: var(--navy);">Rp 0</div>
+            <div class="cash-stat-subtext" id="statCashPaidCount">0 anggota lunas</div>
+          </div>
+
+          <div class="cash-stat-card">
+            <div class="cash-stat-label">
+              <span>Sisa Tagihan</span>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--slate-500);"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+            </div>
+            <div class="cash-stat-value" id="statCashRemaining" style="color: var(--navy);">Rp 0</div>
+            <div class="cash-stat-subtext" id="statCashUnpaidCount">0 belum lunas</div>
+          </div>
+
+          <div class="cash-stat-card">
+            <div class="cash-stat-label">
+              <span>Tingkat Kepatuhan</span>
+              <span id="statCashPercentText" style="color: var(--navy); font-weight: 800;">0%</span>
+            </div>
+            <div class="cash-stat-value" id="statCashComplianceRate" style="font-size: 1.15rem; color: var(--navy);">0% Lunas</div>
+            <div class="cash-progress-bar-bg">
+              <div class="cash-progress-bar-fill" id="statCashProgressBar" style="width: 0%;"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Matriks Iuran Anggota -->
+        <div class="card" style="margin-bottom: 0.5rem; padding: 0; overflow: hidden; border: 1px solid var(--border-color); border-radius: 14px; box-shadow: 0 2px 10px rgba(15, 23, 42, 0.04);">
+          <div class="inventory-toolbar-header" style="padding: 0.85rem 1.15rem;">
+            <div class="inventory-header-info">
+              <div style="display: flex; align-items: center; gap: 0.65rem;">
+                <h4 style="font-size: 0.95rem; font-weight: 800; color: var(--slate-900); margin: 0;">Status Iuran Anggota</h4>
+                <span id="adminCashCountBadge" class="inventory-count-pill">0 Anggota</span>
+              </div>
+              <p class="inventory-header-desc" style="font-size: 0.76rem;">Daftar asisten & status iuran pada bulan ini (Lunas vs Belum Bayar)</p>
+            </div>
+
+            <div class="inventory-header-actions">
+              <div class="inventory-search-box">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="11" cy="11" r="8"></circle>
+                  <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+                <input type="text" id="adminCashSearchInput" placeholder="Cari asisten atau NIM...">
+              </div>
+
+              <select id="adminCashStatusFilter" class="inventory-filter-select">
+                <option value="">Semua Status</option>
+                <option value="LUNAS">Lunas</option>
+                <option value="BELUM_BAYAR">Belum Bayar</option>
+                <option value="PARSIAL">Parsial</option>
+              </select>
+
+              <button type="button" class="btn btn-outline btn-sm" onclick="reloadCurrentMonthDetail()" title="Muat Ulang Data" style="padding: 0.45rem 0.75rem; border-radius: 8px; display: inline-flex; align-items: center; gap: 0.35rem;">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="23 4 23 10 17 10"></polyline>
+                  <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
+                </svg>
+                <span style="font-size: 0.78rem; font-weight: 700;">Refresh</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="table-responsive" style="max-height: 48vh; overflow-y: auto;">
+            <table class="ledger-table" style="font-size: 0.84rem;">
+              <thead style="position: sticky; top: 0; background: var(--slate-50); z-index: 5;">
+                <tr>
+                  <th style="min-width: 320px; white-space: nowrap;">ANGGOTA LABORATORIUM</th>
+                  <th style="width: 140px; text-align: right; white-space: nowrap;">TARGET</th>
+                  <th style="width: 140px; text-align: right; white-space: nowrap;">TERBAYAR</th>
+                  <th style="width: 140px; text-align: right; white-space: nowrap;">SISA</th>
+                  <th style="width: 130px; text-align: center; white-space: nowrap;">STATUS</th>
+                  <th style="width: 130px; text-align: center; white-space: nowrap;">AKSI</th>
+                </tr>
+              </thead>
+              <tbody id="adminCashMatrixTableBody">
+                <!-- Rendered dynamically -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer" style="padding: 0.85rem 1.5rem; background: var(--slate-50); border-top: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center;">
+        <span style="font-size: 0.78rem; color: var(--slate-500); display: flex; align-items: center; gap: 0.4rem;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+          Klik <strong>+ Catat Bayar</strong> untuk langsung membuka konfirmasi pembayaran.
+        </span>
+        <div style="display: flex; gap: 0.65rem;">
+          <button type="button" class="btn btn-outline" data-close-modal>Tutup</button>
+          <button type="button" class="btn btn-primary" onclick="openQuickPayModal(null)">+ Catat Setoran Iuran</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= MODAL 9: POPUP CATAT PEMBAYARAN IURAN KAS ================= -->
+  <div id="modalRecordPayment" class="modal-overlay">
+    <div class="modal-box" style="max-width: 560px; width: 95%;">
+      <div class="modal-header">
+        <div style="display: flex; align-items: center; gap: 0.75rem;">
+          <div style="width: 38px; height: 38px; border-radius: 10px; background: rgba(0, 91, 130, 0.08); color: var(--navy); display: flex; align-items: center; justify-content: center;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="5" width="20" height="14" rx="2"></rect>
+              <line x1="2" y1="10" x2="22" y2="10"></line>
+            </svg>
+          </div>
+          <div>
+            <h3 style="font-size: 1.05rem; font-weight: 800; color: var(--slate-900); margin: 0;">Catat Setoran Iuran Kas</h3>
+            <p style="font-size: 0.76rem; color: var(--slate-500); margin: 2px 0 0 0;">Konfirmasi penyetoran iuran kas bulanan anggota</p>
+          </div>
+        </div>
+        <button type="button" class="modal-close" data-close-modal title="Tutup Popup">&times;</button>
+      </div>
+
+      <form id="formQuickRecordPayment">
+        <div class="modal-body" style="padding: 1.25rem 1.5rem;">
+          <!-- Member Info Preview Box -->
+          <div class="quick-pay-member-card" id="quickPayMemberCard">
+            <div class="quick-pay-avatar" id="quickPayAvatar">DR</div>
+            <div class="quick-pay-meta" style="flex: 1;">
+              <h4 id="quickPayMemberName">Daffa Ramadhan</h4>
+              <p id="quickPayMemberNimRole">1101220078 • Divisi Software & Cloud</p>
+              <div style="margin-top: 6px; display: flex; gap: 0.5rem; flex-wrap: wrap; font-size: 0.78rem;">
+                <span style="background: rgba(0, 91, 130, 0.08); color: var(--navy); padding: 0.15rem 0.5rem; border-radius: 4px; font-weight: 700;" id="quickPayPeriodTag">Bulan: -</span>
+                <span style="background: rgba(0, 91, 130, 0.08); color: var(--navy); padding: 0.15rem 0.5rem; border-radius: 4px; font-weight: 700;" id="quickPayRemainingTag">Sisa: Rp 0</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Hidden Member ID -->
+          <input type="hidden" id="quickPayMemberId" value="">
+
+          <!-- If opened without pre-selected member, allow changing -->
+          <div class="form-group" id="quickPayMemberSelectGroup" style="display: none;">
+            <label class="form-label">Pilih Anggota Lab <span style="color: var(--kredit-red);">*</span></label>
+            <select id="quickPayMemberSelect" class="form-control">
+              <!-- Dynamically populated -->
+            </select>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Periode Bulan <span style="color: var(--kredit-red);">*</span></label>
+              <input type="month" id="quickPayPeriod" class="form-control" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Metode Pembayaran</label>
+              <select id="quickPayMethod" class="form-control">
+                <option value="Cash">Tunai (Cash)</option>
+                <option value="Transfer Bank">Transfer Bank</option>
+                <option value="QRIS">QRIS</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.35rem;">
+              <label class="form-label" style="margin-bottom: 0;">Nominal Pembayaran (Rp) <span style="color: var(--kredit-red);">*</span></label>
+              <span id="quickPaySuggestedAmount" style="font-size: 0.76rem; color: var(--slate-500); font-weight: 600;"></span>
+            </div>
+            <input type="number" id="quickPayAmount" class="form-control" placeholder="20000" min="1000" step="1000" required style="font-family: 'JetBrains Mono', monospace; font-size: 1.05rem; font-weight: 800; color: var(--slate-900);">
+            
+            <!-- Quick Chips -->
+            <div class="quick-pay-chips">
+              <button type="button" class="quick-pay-chip full-pay" id="btnQuickPayFull" onclick="applyQuickAmount('full')">Bayar Lunas</button>
+              <button type="button" class="quick-pay-chip" onclick="applyQuickAmount(10000)">Rp 10.000</button>
+              <button type="button" class="quick-pay-chip" onclick="applyQuickAmount(20000)">Rp 20.000</button>
+              <button type="button" class="quick-pay-chip" onclick="applyQuickAmount(50000)">Rp 50.000</button>
+            </div>
+          </div>
+
+          <div class="form-group" style="margin-bottom: 0;">
+            <label class="form-label">Catatan Pembayaran (Opsional)</label>
+            <input type="text" id="quickPayNotes" class="form-control" placeholder="Contoh: Setoran kas September">
+          </div>
+        </div>
+
+        <div class="modal-footer" style="padding: 0.85rem 1.5rem; background: var(--slate-50); border-top: 1px solid var(--border-color); display: flex; justify-content: flex-end; gap: 0.65rem;">
+          <button type="button" class="btn btn-outline" data-close-modal>Batal</button>
+          <button type="submit" class="btn btn-primary" id="btnSubmitQuickPay" style="font-weight: 800; padding: 0.55rem 1.25rem;">
+            Simpan Pembayaran
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ================= MODAL: CATAT PEMASUKAN LAIN / HIBAH ================= -->
+  <div id="modalAddIncome" class="modal-overlay">
+    <div class="modal-box" style="max-width: 520px; width: 95%;">
+      <div class="modal-header">
+        <div>
+          <h3>Catat Pemasukan Kas Lab</h3>
+          <p style="font-size: 0.78rem; color: var(--slate-500); margin-top: 2px;">Pencatatan dana masuk dari hibah, sponsorship, penjualan modul, atau dana eksternal</p>
+        </div>
+        <button class="modal-close" data-close-modal>&times;</button>
+      </div>
+      <form id="formAddIncome">
+        <div class="modal-body" style="padding: 1.25rem 1.5rem;">
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Tanggal Transaksi <span class="req">*</span></label>
+              <input type="date" id="addIncomeDate" class="form-control" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Metode Penerimaan <span class="req">*</span></label>
+              <select id="addIncomeMethod" class="form-control" required>
+                <option value="Transfer Bank">Transfer Bank</option>
+                <option value="Kas Tunai">Kas Tunai</option>
+                <option value="QRIS">QRIS</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Sumber Pemasukan / Pihak Pembayar <span class="req">*</span></label>
+            <input type="text" id="addIncomeSource" class="form-control" placeholder="Contoh: Hibah Fakultas / Sponsorship Event / Penjualan Modul" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Nominal Pemasukan (Rp) <span class="req">*</span></label>
+            <input type="number" id="addIncomeAmount" class="form-control" placeholder="Contoh: 500000" min="1000" step="1000" required style="font-family: 'JetBrains Mono', monospace; font-size: 1.05rem; font-weight: 800; color: var(--slate-900);">
+          </div>
+
+          <div class="form-group" style="margin-bottom: 0;">
+            <label class="form-label">Uraian / Keterangan Transaksi</label>
+            <textarea id="addIncomeNotes" class="form-control" rows="2" placeholder="Catatan rincian keperluan atau keterangan dana masuk..."></textarea>
+          </div>
+        </div>
+
+        <div class="modal-footer" style="padding: 0.85rem 1.5rem; background: var(--slate-50); border-top: 1px solid var(--border-color); display: flex; justify-content: flex-end; gap: 0.65rem;">
+          <button type="button" class="btn btn-outline" data-close-modal>Batal</button>
+          <button type="submit" class="btn btn-primary" id="btnSubmitAddIncome" style="font-weight: 800; padding: 0.55rem 1.35rem;">
+            Simpan Pemasukan
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ================= MODAL: CATAT PENGELUARAN / BELANJA OPERASIONAL ================= -->
+  <div id="modalAddExpense" class="modal-overlay">
+    <div class="modal-box" style="max-width: 540px; width: 95%;">
+      <div class="modal-header">
+        <div>
+          <h3>Catat Pengeluaran Kas Lab</h3>
+          <p style="font-size: 0.78rem; color: var(--slate-500); margin-top: 2px;">Pencatatan pengeluaran dana operasional, pembelian alat/komponen, dan perawatan lab</p>
+        </div>
+        <button class="modal-close" data-close-modal>&times;</button>
+      </div>
+      <form id="formAddExpense" enctype="multipart/form-data">
+        <div class="modal-body" style="padding: 1.25rem 1.5rem;">
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Tanggal Transaksi <span class="req">*</span></label>
+              <input type="date" id="addExpenseDate" class="form-control" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Kategori Pengeluaran <span class="req">*</span></label>
+              <select id="addExpenseCategory" class="form-control" required>
+                <option value="Komponen & Sensor">Komponen & Sensor</option>
+                <option value="Alat & Peralatan Lab">Alat & Peralatan Lab</option>
+                <option value="Konsumsi & Operasional">Konsumsi & Operasional</option>
+                <option value="ATK & Cetak Dokumen">ATK & Cetak Dokumen</option>
+                <option value="Pemeliharaan & Kebersihan">Pemeliharaan & Kebersihan</option>
+                <option value="Lain-lain">Lain-lain</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Rincian / Uraian Belanja <span class="req">*</span></label>
+            <input type="text" id="addExpenseDesc" class="form-control" placeholder="Contoh: Beli 5 pcs ESP32 dan kabel jumper di Tokopedia" required>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Nominal Pengeluaran (Rp) <span class="req">*</span></label>
+              <input type="number" id="addExpenseAmount" class="form-control" placeholder="Contoh: 150000" min="1000" step="1000" required style="font-family: 'JetBrains Mono', monospace; font-size: 1.05rem; font-weight: 800; color: var(--slate-900);">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Metode Pembayaran <span class="req">*</span></label>
+              <select id="addExpenseMethod" class="form-control" required>
+                <option value="Transfer Bank">Transfer Bank</option>
+                <option value="Kas Tunai">Kas Tunai</option>
+                <option value="QRIS">QRIS</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group" style="margin-bottom: 0;">
+            <label class="form-label">Unggah Foto Nota / Bukti Bayar (Opsional)</label>
+            <input type="file" id="addExpenseReceiptFile" class="form-control" accept="image/*,.pdf">
+            <span style="font-size: 0.74rem; color: var(--slate-500); display: block; margin-top: 3px;">Format diperbolehkan: JPG, PNG, atau PDF (maks. 5MB).</span>
+          </div>
+        </div>
+
+        <div class="modal-footer" style="padding: 0.85rem 1.5rem; background: var(--slate-50); border-top: 1px solid var(--border-color); display: flex; justify-content: flex-end; gap: 0.65rem;">
+          <button type="button" class="btn btn-outline" data-close-modal>Batal</button>
+          <button type="submit" class="btn btn-primary" id="btnSubmitAddExpense" style="font-weight: 800; padding: 0.55rem 1.35rem;">
+            Simpan Pengeluaran
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ================= MODAL: PRATINJAU & CETAK PDF LAPORAN KEUANGAN ================= -->
+  <div id="modalFinancePdfPreview" class="modal-overlay">
+    <div class="modal-box" style="max-width: 920px; width: 96%; max-height: 92vh; display: flex; flex-direction: column;">
+      <div class="modal-header no-print">
+        <div style="display: flex; align-items: center; gap: 0.75rem;">
+          <div style="width: 36px; height: 36px; border-radius: 8px; background: rgba(0, 91, 130, 0.08); color: var(--navy); display: flex; align-items: center; justify-content: center;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+          </div>
+          <div>
+            <h3>Pratinjau Laporan Keuangan Laboratorium</h3>
+            <p style="font-size: 0.78rem; color: var(--slate-500);">Dokumen resmi rekapitulasi buku kas & keuangan total (Format Cetak A4 / PDF)</p>
+          </div>
+        </div>
+        <div style="display: flex; align-items: center; gap: 0.5rem;">
+          <button type="button" class="btn btn-primary btn-sm" onclick="printFinanceReport()" style="display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.5rem 1.15rem; font-weight: 800;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M6 9V2h12v7"></path><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+            <span>Cetak / Unduh PDF</span>
+          </button>
+          <button class="modal-close" data-close-modal>&times;</button>
+        </div>
+      </div>
+
+      <div class="modal-body" style="padding: 1.5rem; overflow-y: auto; background: #f8fafc;">
+        <!-- Container that gets printed -->
+        <div id="printableFinanceReportArea" class="printable-finance-paper">
+          <!-- Content rendered dynamically by renderFinancePdfPreview() -->
+        </div>
+      </div>
+
+      <div class="modal-footer no-print" style="padding: 0.85rem 1.5rem; background: #ffffff; border-top: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center;">
+        <span style="font-size: 0.8rem; color: var(--slate-500);">Tip: Gunakan opsi <strong>"Save as PDF"</strong> pada dialog cetak peramban.</span>
+        <div style="display: flex; gap: 0.5rem;">
+          <button type="button" class="btn btn-outline" data-close-modal>Tutup</button>
+          <button type="button" class="btn btn-primary" onclick="printFinanceReport()" style="display: inline-flex; align-items: center; gap: 0.4rem; font-weight: 800;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M6 9V2h12v7"></path><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+            <span>Cetak / Unduh PDF</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= MODAL: CUSTOM ALERT / NOTIFIKASI POPUP ================= -->
+  <div id="modalAppAlert" class="modal-overlay" style="z-index: 100000;">
+    <div class="modal-box app-alert-box" style="max-width: 440px; width: 92%; border-radius: 16px; overflow: hidden; border: 1px solid var(--border-color); box-shadow: 0 20px 45px -10px rgba(15, 23, 42, 0.25); background: #ffffff;">
+      <div class="modal-header" style="padding: 1.15rem 1.35rem 0.85rem 1.35rem; border-bottom: none; display: flex; align-items: center; justify-content: space-between;">
+        <div style="display: flex; align-items: center; gap: 0.75rem;">
+          <div id="appAlertIconBox" style="width: 36px; height: 36px; border-radius: 10px; background: rgba(0, 91, 130, 0.08); color: var(--navy); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+            <svg id="appAlertIconSvg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="12" y1="8" x2="12" y2="12"></line>
+              <line x1="12" y1="16" x2="12.01" y2="16"></line>
+            </svg>
+          </div>
+          <h3 id="appAlertTitle" style="font-size: 1.02rem; font-weight: 800; color: var(--slate-900); margin: 0;">Pemberitahuan Sistem</h3>
+        </div>
+        <button type="button" class="modal-close" onclick="closeAppAlert()" style="font-size: 1.25rem;">&times;</button>
+      </div>
+
+      <div class="modal-body" style="padding: 0.35rem 1.35rem 1.25rem 1.35rem;">
+        <div id="appAlertMessage" style="font-size: 0.88rem; color: var(--slate-600); line-height: 1.6; white-space: pre-line;">
+          Pesan pemberitahuan
+        </div>
+      </div>
+
+      <div class="modal-footer" id="appAlertFooter" style="padding: 0.85rem 1.35rem; background: var(--slate-50); border-top: 1px solid var(--border-color); display: flex; justify-content: flex-end; gap: 0.5rem;">
+        <button type="button" class="btn btn-primary" id="btnAppAlertOk" onclick="closeAppAlert()" style="font-weight: 700; padding: 0.55rem 1.5rem; font-size: 0.86rem; border-radius: 8px;">
+          Mengerti
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script src="/js/app.js"></script>
+</body>
+</html>

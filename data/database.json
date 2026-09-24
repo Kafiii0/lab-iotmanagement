@@ -1,0 +1,484 @@
+{
+  "admin": {
+    "username": "admin_iot",
+    "password": "iotlabtelkom2026",
+    "name": "Laboran / Asisten Lab IoT",
+    "role": "Laboran Utama"
+  },
+  "inventory": [
+    {
+      "id": "INV-001",
+      "name": "ESP32-WROOM-32 Development Board",
+      "category": "Mikrokontroler",
+      "location": "Rak Komponen A - Boks 01",
+      "totalStock": 15,
+      "availableStock": 12,
+      "borrowedStock": 3,
+      "unit": "Unit",
+      "condition": "Baik",
+      "loanable": "all",
+      "loanPolicyText": "Boleh Dipinjam (Umum & Internal)",
+      "description": "Dual-core 240MHz, WiFi & BLE 4.2 integrasi, 38 pin GPIO."
+    },
+    {
+      "id": "INV-002",
+      "name": "Raspberry Pi 4 Model B (4GB RAM)",
+      "category": "Single Board Computer",
+      "location": "Rak Komponen A - Boks 02",
+      "totalStock": 5,
+      "availableStock": 3,
+      "borrowedStock": 2,
+      "unit": "Unit",
+      "condition": "Baik",
+      "loanable": "internal_only",
+      "loanPolicyText": "Khusus Internal Lab IoT",
+      "description": "Broadcom BCM2711 quad-core Cortex-A72, Gigabit Ethernet, 2x Micro HDMI."
+    },
+    {
+      "id": "INV-003",
+      "name": "Arduino Uno R3 DIP ATmega328P",
+      "category": "Mikrokontroler",
+      "location": "Rak Komponen A - Boks 03",
+      "totalStock": 10,
+      "availableStock": 8,
+      "borrowedStock": 2,
+      "unit": "Unit",
+      "condition": "Baik",
+      "loanable": "all",
+      "loanPolicyText": "Boleh Dipinjam (Umum & Internal)",
+      "description": "Development board standard untuk prototipe mikrokontroler 16MHz."
+    },
+    {
+      "id": "INV-004",
+      "name": "Rigol DS1054Z Digital Oscilloscope 50MHz 4CH",
+      "category": "Alat Ukur & Instrumentasi",
+      "location": "Meja Kerja Riset 02 - Workbench",
+      "totalStock": 2,
+      "availableStock": 2,
+      "borrowedStock": 0,
+      "unit": "Unit",
+      "condition": "Baik",
+      "loanable": "restricted",
+      "loanPolicyText": "Aset Tetap Lab (Hanya Digunakan di Ruang Lab)",
+      "description": "Osiloskop digital 4-channel, 1GSa/s real-time sample rate. Tidak diizinkan dibawa keluar lab."
+    },
+    {
+      "id": "INV-005",
+      "name": "Quick 936A ESD Safe Soldering Station",
+      "category": "Perkakas & Solder",
+      "location": "Meja Fabrikasi Solder - Station 1",
+      "totalStock": 3,
+      "availableStock": 3,
+      "borrowedStock": 0,
+      "unit": "Unit",
+      "condition": "Baik",
+      "loanable": "restricted",
+      "loanPolicyText": "Aset Tetap Lab (Hanya Digunakan di Ruang Lab)",
+      "description": "Stasiun solder suhu terkontrol 200°C - 480°C dengan grounding anti-statis."
+    },
+    {
+      "id": "INV-006",
+      "name": "Sanwa CD800a Digital Multimeter True RMS",
+      "category": "Alat Ukur & Instrumentasi",
+      "location": "Lemari Instrumen L-01",
+      "totalStock": 4,
+      "availableStock": 2,
+      "borrowedStock": 2,
+      "unit": "Unit",
+      "condition": "Baik",
+      "loanable": "all",
+      "loanPolicyText": "Boleh Dipinjam (Umum & Internal)",
+      "description": "Multimeter presisi tinggi, 4000 count, pengukuran tegangan, arus, resistansi, kontinuitas."
+    },
+    {
+      "id": "INV-007",
+      "name": "LoRa SX1278 Ra-02 433MHz Transceiver Module",
+      "category": "Sensor & Modul Nirkabel",
+      "location": "Rak Komponen B - Boks Modul 04",
+      "totalStock": 12,
+      "availableStock": 9,
+      "borrowedStock": 3,
+      "unit": "Pcs",
+      "condition": "Baik",
+      "loanable": "all",
+      "loanPolicyText": "Boleh Dipinjam (Umum & Internal)",
+      "description": "Modul komunikasi nirkabel jarak jauh berbasis Semtech SX1278 SPI interface."
+    },
+    {
+      "id": "INV-008",
+      "name": "Sensor Suhu & Kelembaban DHT22 (AM2302)",
+      "category": "Sensor & Modul Nirkabel",
+      "location": "Rak Komponen B - Boks Sensor 01",
+      "totalStock": 18,
+      "availableStock": 16,
+      "borrowedStock": 2,
+      "unit": "Pcs",
+      "condition": "Baik",
+      "loanable": "all",
+      "loanPolicyText": "Boleh Dipinjam (Umum & Internal)",
+      "description": "Sensor digital presisi tinggi, rentang -40 hingga 80°C dan 0-100% RH."
+    },
+    {
+      "id": "INV-009",
+      "name": "Ultrasonic Distance Sensor HC-SR04",
+      "category": "Sensor & Modul Nirkabel",
+      "location": "Rak Komponen B - Boks Sensor 02",
+      "totalStock": 20,
+      "availableStock": 18,
+      "borrowedStock": 2,
+      "unit": "Pcs",
+      "condition": "Baik",
+      "loanable": "all",
+      "loanPolicyText": "Boleh Dipinjam (Umum & Internal)",
+      "description": "Sensor jarak ultrasonik 2cm - 400cm untuk navigasi robotik dan level air."
+    },
+    {
+      "id": "INV-010",
+      "name": "Atten ST-862D Hot Air Rework Station 1000W",
+      "category": "Perkakas & Solder",
+      "location": "Meja Fabrikasi Solder - Station 2",
+      "totalStock": 1,
+      "availableStock": 1,
+      "borrowedStock": 0,
+      "unit": "Unit",
+      "condition": "Baik",
+      "loanable": "restricted",
+      "loanPolicyText": "Aset Tetap Lab (Hanya Digunakan di Ruang Lab)",
+      "description": "Hot air gun digital untuk desoldering SMD. Khusus operasional lab."
+    }
+  ],
+  "loans": [
+    {
+      "uniqueId": "IOT-REQ-202609-CXM2",
+      "createdAt": "2026-09-24T04:27:27.792Z",
+      "status": "SELESAI",
+      "statusLabel": "Selesai (Barang Sudah Dikembalikan)",
+      "borrower": {
+        "name": "Aditya Pratama",
+        "nim": "1101223045",
+        "type": "ormawa",
+        "institutionName": "Himpunan Mahasiswa Teknik Elektro",
+        "whatsapp": "08123456789",
+        "email": ""
+      },
+      "purpose": "Workshop IoT Smart Agriculture 2026",
+      "borrowDate": "2026-09-25",
+      "returnDate": "2026-09-30",
+      "items": [
+        {
+          "itemId": "INV-001",
+          "name": "ESP32-WROOM-32 Development Board",
+          "category": "Mikrokontroler",
+          "location": "Rak Komponen A - Boks 01",
+          "qty": 2,
+          "unit": "Unit"
+        }
+      ],
+      "documents": {
+        "signedDocumentUrl": null,
+        "idCardUrl": null,
+        "uploadedAt": null
+      },
+      "audit": {
+        "generatedAt": "2026-09-24T04:27:27.792Z",
+        "verifiedAt": null,
+        "verifiedBy": null,
+        "handoverAt": "2026-09-24T04:28:03.004Z",
+        "returnedAt": "2026-09-24T04:28:14.028Z",
+        "notes": "Barang dikembalikan lengkap dan dalam kondisi baik"
+      },
+      "qrCodeDataUrl": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALQAAAC0CAYAAAA9zQYyAAAAAklEQVR4AewaftIAAAZ1SURBVO3BUW4bOBYAwW5C979yr78JGWAkJfZwX5V9YYxLLMa4yGKMiyzGuMhijIssxrjIg2+o/CYVO5VXVZxQeaZip3Ki4qeo7CpOqPwmFbvFGBdZjHGRxRgXWYxxkQd/oOJvUzlVsVN5lcoplV3FTuVVKruKZ1ROVHxSxb+gcmIxxkUWY1xkMcZFFmNc5MGbVF5V8dtVPKOyUzmhsqvYVexUnqk4obKr+DSVV1W8ajHGRRZjXGQxxkUWY1zkwX+YyomKncqu4lTFCZUTKicqTqn8v1mMcZHFGBdZjHGRxRgXeXCZip3KCZVTFa+q2KmcUHmmYlexU9mp7Cr+ixZjXGQxxkUWY1xkMcZFHryp4r+o4oTKKZVdxYmKncoplV3FT6n4CYsxLrIY4yKLMS6yGOMiD/6Ays1UdhXPqOwqdiq7ip3KrmKn8kzFTmVXsVN5lcpvshjjIosxLrIY4yKLMS6yGOMi9oX/KJVdxU7lRMW/oHKi4pTKqypusRjjIosxLrIY4yKLMS7y4Bsqu4pXqewqdirvUPkpKruKExU7lXdUnFD5KRUnVHYVu8UYF1mMcZHFGBdZjHGRB3+ByqsqnlF5VcVOZaeyq3iHyq5ip7Kr+DSVXcVOZVfxDpWdyomKE4sxLrIY4yKLMS6yGOMiD75RcUJlV/EqlWcqTqjsVE5U7FTeUXGi4oTKTSp2Kq9ajHGRxRgXWYxxkcUYF3nwB1ROqOwqdiq7indU7FR2Fe+oOKGyq9ipvKPihMpOZVfxaRV/22KMiyzGuMhijIssxrjIgzdV7FR2KidUnqnYqewqXqXyaRWvqvhNVD6t4oTKrmK3GOMiizEushjjIosxLvLgTSonKt6hsqvYqewqXlXxjMqu4oTKp6nsKj6pYqfyTMUJlV3FqxZjXGQxxkUWY1xkMcZFFmNc5ME3VE5UnFB5R8VOZVdxQmVX8Q6VExU7lRMqz1R8ksqJik9T2VWcWIxxkcUYF1mMcZHFGBd58AcqTqjsKnYqu4pnVF6l8iqVZyp2KidUdhU7lV3FMyonKk6ofJrKruKTFmNcZDHGRRZjXGQxxkUefKPihMqu4kTFTuWZik+q2Km8o2Kn8kkq71A5UbFTOaWyqzihsqs4sRjjIosxLrIY4yKLMS5iX7iIyq5ip3Ki4hmVv63ilMqrKnYqu4p3qLyq4sRijIssxrjIYoyLLMa4yIM3qbyqYqfyTMWJihMVO5XfTuWZip3KqypOqDxTcaJip/KqxRgXWYxxkcUYF1mMcRH7wiGVXcVvonKi4oTKMxUnVHYVO5UTFadUXlWxUzlV8Ukqu4rdYoyLLMa4yGKMiyzGuIh94cNUPq3iVSqvqnhGZVdxQmVX8Q6VXcUJlV3FTmVX8YzKiYpPWoxxkcUYF1mMcZHFGBdZjHGRB99QOVGxq9ip7CreoXKi4oTKTuWZit+kYqdyomKnsqs4VbFTOaGyqzixGOMiizEushjjIosxLmJf+DCVXcUJlVMVr1L5TSreobKr2KmcqNip/JSKE4sxLrIY4yKLMS6yGOMi9oU3qOwqdiq7ilMqu4qdyq7iVSrPVOxUdhU7lRMVp1ROVJxQ2VWcUtlVnFA5UbFbjHGRxRgXWYxxkcUYF3nwDZVXqewqTqg8U/EqlV3FO1ROqJyoOKHyaSonVH5KxYnFGBdZjHGRxRgXWYxxkQffqPgJFadUdhU7lRMq/0LFqyqeUdlV7FROVLxD5YTKJy3GuMhijIssxrjIYoyLPPiGym9S8bdV7FTeUfGbVOxUTqjsKk6p7Co+aTHGRRZjXGQxxkUWY1zkwR+o+NtUTlWcqNipnKh4RuVVKruKEyo/peIdFSdUdhUnFmNcZDHGRRZjXGQxxkUWY1zkwZtUXlXxDpVdxU5lV7FT2amcqtipnFDZVZyq2KnsKk6ofJrKruKTFmNcZDHGRRZjXGQxxkUe/IdVvEplV7FTeaZip3Ki4oTKruJUxU5lV3FC5R0Vf9tijIssxrjIYoyLLMa4yIPLqPwLKicqTqjsKnYqpyp2FTuVXcVPqXjVYoyLLMa4yGKMiyzGuMiDN1X8JhU7lV3FTuVUxU7lhMqu4kTFMyonVF5V8dstxrjIYoyLLMa4yGKMizz4Ayq/icquYlexU/ntVN6h8kkqu4p/QWVXsVuMcZHFGBdZjHGRxRgXsS+McYnFGBdZjHGRxRgXWYxxkf8BoFPcsGJ/vIIAAAAASUVORK5CYII="
+    },
+    {
+      "uniqueId": "IOT-REQ-202609-VYLA",
+      "createdAt": "2026-09-24T04:49:30.229Z",
+      "status": "DIPINJAM",
+      "statusLabel": "Sedang Dipinjam",
+      "borrower": {
+        "name": "kahfi",
+        "nim": "10230252055",
+        "type": "ormawa",
+        "institutionName": "t",
+        "whatsapp": "085186847898",
+        "email": "t@gmail.com"
+      },
+      "purpose": "adala",
+      "borrowDate": "2026-12-04",
+      "returnDate": "2026-12-22",
+      "items": [
+        {
+          "itemId": "INV-006",
+          "name": "Sanwa CD800a Digital Multimeter True RMS",
+          "category": "Alat Ukur & Instrumentasi",
+          "location": "Lemari Instrumen L-01",
+          "qty": 1,
+          "unit": "Unit"
+        },
+        {
+          "itemId": "INV-007",
+          "name": "LoRa SX1278 Ra-02 433MHz Transceiver Module",
+          "category": "Sensor & Modul Nirkabel",
+          "location": "Rak Komponen B - Boks Modul 04",
+          "qty": 1,
+          "unit": "Pcs"
+        }
+      ],
+      "documents": {
+        "signedDocumentUrl": null,
+        "idCardUrl": null,
+        "uploadedAt": null
+      },
+      "audit": {
+        "generatedAt": "2026-09-24T04:49:30.229Z",
+        "verifiedAt": "2026-09-24T10:16:51.815Z",
+        "verifiedBy": "Laboran / Asisten Lab IoT",
+        "handoverAt": "2026-09-24T10:17:00.792Z",
+        "returnedAt": null,
+        "notes": ""
+      },
+      "qrCodeDataUrl": "data:image/png;base64,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"
+    },
+    {
+      "uniqueId": "IOT-REQ-202609-NIJK",
+      "createdAt": "2026-09-24T06:39:06.804Z",
+      "status": "SELESAI",
+      "statusLabel": "Selesai (Barang Sudah Dikembalikan)",
+      "borrower": {
+        "name": "Kaden Stein",
+        "nim": "Incidunt voluptatem",
+        "type": "mahasiswa_luar",
+        "institutionName": "Haviva Crosby",
+        "whatsapp": "+1 (969) 659-9383",
+        "email": "faxas@mailinator.com"
+      },
+      "purpose": "Quaerat consequat C",
+      "borrowDate": "2026-09-24",
+      "returnDate": "2026-09-24",
+      "items": [
+        {
+          "itemId": "INV-007",
+          "name": "LoRa SX1278 Ra-02 433MHz Transceiver Module",
+          "category": "Sensor & Modul Nirkabel",
+          "location": "Rak Komponen B - Boks Modul 04",
+          "qty": 1,
+          "unit": "Pcs"
+        },
+        {
+          "itemId": "INV-006",
+          "name": "Sanwa CD800a Digital Multimeter True RMS",
+          "category": "Alat Ukur & Instrumentasi",
+          "location": "Lemari Instrumen L-01",
+          "qty": 1,
+          "unit": "Unit"
+        }
+      ],
+      "documents": {
+        "signedDocumentUrl": null,
+        "idCardUrl": null,
+        "uploadedAt": null
+      },
+      "audit": {
+        "generatedAt": "2026-09-24T06:39:06.804Z",
+        "verifiedAt": "2026-09-24T10:16:33.067Z",
+        "verifiedBy": "Laboran / Asisten Lab IoT",
+        "handoverAt": "2026-09-24T10:16:37.596Z",
+        "returnedAt": "2026-09-24T10:16:42.510Z",
+        "notes": ""
+      },
+      "qrCodeDataUrl": "data:image/png;base64,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"
+    }
+  ],
+  "cashMembers": [
+    {
+      "id": "MBR-01",
+      "nim": "1101220012",
+      "name": "Muhammad Fadhil",
+      "role": "Koordinator Lab IoT",
+      "active": true
+    },
+    {
+      "id": "MBR-02",
+      "nim": "1101220034",
+      "name": "Aisyah Putri Rahmawati",
+      "role": "Bendahara Lab",
+      "active": true
+    },
+    {
+      "id": "MBR-03",
+      "nim": "1101220055",
+      "name": "Bagus Tri Wicaksono",
+      "role": "Divisi Hardware & IoT",
+      "active": true
+    },
+    {
+      "id": "MBR-04",
+      "nim": "1101220078",
+      "name": "Daffa Ramadhan",
+      "role": "Divisi Software & Cloud",
+      "active": true
+    },
+    {
+      "id": "MBR-05",
+      "nim": "1101220092",
+      "name": "Nabila Zahra",
+      "role": "Divisi Riset & Proyek",
+      "active": true
+    },
+    {
+      "id": "MBR-06",
+      "nim": "1101220110",
+      "name": "Rizky Pratama",
+      "role": "Asisten Lab",
+      "active": true
+    },
+    {
+      "id": "MBR-07",
+      "nim": "1101220124",
+      "name": "Farhan Maulana",
+      "role": "Asisten Lab",
+      "active": true
+    },
+    {
+      "id": "MBR-08",
+      "nim": "1101220140",
+      "name": "Siti Nurhaliza",
+      "role": "Asisten Lab",
+      "active": true
+    }
+  ],
+  "monthlyTargets": {
+    "2026-07": {
+      "targetAmount": 0,
+      "notes": "Libur Semester Genap (Bebas Kas)"
+    },
+    "2026-08": {
+      "targetAmount": 15000,
+      "notes": "Awal Semester Ganjil"
+    },
+    "2026-09": {
+      "targetAmount": 20000,
+      "notes": "Pengadaan Alat Solder & Restock Komponen IoT"
+    },
+    "2026-10": {
+      "targetAmount": 30000,
+      "notes": "Pengadaan Modul LoRa Gateway Baru"
+    },
+    "2026-11": {
+      "targetAmount": 20000,
+      "notes": "Operasional Reguler Lab"
+    },
+    "2026-12": {
+      "targetAmount": 15000,
+      "notes": "Evaluasi Akhir Periode"
+    }
+  },
+  "cashTransactions": [
+    {
+      "id": "CASH-TRX-001",
+      "date": "2026-08-05",
+      "type": "income_dues",
+      "memberId": "MBR-01",
+      "memberName": "Muhammad Fadhil",
+      "period": "2026-08",
+      "amount": 15000,
+      "paymentMethod": "Transfer Bank",
+      "notes": "Kas Agustus lunas",
+      "receiptFile": null
+    },
+    {
+      "id": "CASH-TRX-002",
+      "date": "2026-08-06",
+      "type": "income_dues",
+      "memberId": "MBR-02",
+      "memberName": "Aisyah Putri Rahmawati",
+      "period": "2026-08",
+      "amount": 15000,
+      "paymentMethod": "Cash",
+      "notes": "Kas Agustus lunas",
+      "receiptFile": null
+    },
+    {
+      "id": "CASH-TRX-003",
+      "date": "2026-08-12",
+      "type": "income_other",
+      "memberId": null,
+      "memberName": "Hibah Riset IoT Capstone",
+      "period": "2026-08",
+      "amount": 500000,
+      "paymentMethod": "Transfer",
+      "notes": "Dana dukungan pengadaan komponen mikrokontroler dari dosen pembina",
+      "receiptFile": null
+    },
+    {
+      "id": "CASH-TRX-004",
+      "date": "2026-08-20",
+      "type": "expense",
+      "category": "Komponen & Alat Lab",
+      "amount": 285000,
+      "paymentMethod": "Transfer",
+      "description": "Pembelian 5x ESP32 DevKit & 10x Kabel Jumper Male-Female untuk restock",
+      "receiptFile": null,
+      "recordedBy": "Aisyah Putri (Bendahara)"
+    },
+    {
+      "id": "CASH-TRX-005",
+      "date": "2026-09-02",
+      "type": "income_dues",
+      "memberId": "MBR-01",
+      "memberName": "Muhammad Fadhil",
+      "period": "2026-09",
+      "amount": 20000,
+      "paymentMethod": "Transfer",
+      "notes": "Iuran kas September lunas",
+      "receiptFile": null
+    },
+    {
+      "id": "CASH-TRX-006",
+      "date": "2026-09-03",
+      "type": "income_dues",
+      "memberId": "MBR-03",
+      "memberName": "Bagus Tri Wicaksono",
+      "period": "2026-09",
+      "amount": 20000,
+      "paymentMethod": "Cash",
+      "notes": "Iuran kas September lunas",
+      "receiptFile": null
+    },
+    {
+      "id": "CASH-TRX-007",
+      "date": "2026-09-24",
+      "type": "income_dues",
+      "memberId": "MBR-05",
+      "memberName": "Nabila Zahra",
+      "period": "2026-07",
+      "amount": 10000,
+      "paymentMethod": "Cash",
+      "notes": "Iuran kas Juli 2026 - Nabila Zahra",
+      "receiptFile": null
+    },
+    {
+      "id": "CASH-TRX-008",
+      "date": "2026-09-24",
+      "type": "income_dues",
+      "memberId": "MBR-04",
+      "memberName": "Daffa Ramadhan",
+      "period": "2026-11",
+      "amount": 20000,
+      "paymentMethod": "Cash",
+      "notes": "Iuran kas November 2026 - Daffa Ramadhan",
+      "receiptFile": null
+    },
+    {
+      "id": "CASH-TRX-009",
+      "date": "2026-09-24",
+      "type": "income_dues",
+      "memberId": "MBR-04",
+      "memberName": "Daffa Ramadhan",
+      "period": "2026-11",
+      "amount": 50000,
+      "paymentMethod": "Cash",
+      "notes": "Iuran kas November 2026 - Daffa Ramadhan",
+      "receiptFile": null
+    }
+  ]
+}
