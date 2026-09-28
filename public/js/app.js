@@ -1,23 +1,17 @@
-/**
- * Sistem Informasi Inventaris, Peminjaman & Kas Lab IoT Telkom University
- * Compact, Professional & Clean Client Application Logic
- */
 
-// Application State
 const state = {
   activeView: localStorage.getItem('iot_lab_active_view') || 'catalog',
   adminTab: localStorage.getItem('iot_lab_admin_tab') || 'loans',
   inventory: [],
-  cart: [],              // [{ item, qty }]
+  cart: [],              
   currentGeneratedLoan: null,
   auth: {
     token: localStorage.getItem('iot_lab_token') || null,
     user: JSON.parse(localStorage.getItem('iot_lab_user') || 'null')
   },
-  cashMonth: new Date().toISOString().substring(0, 7) // "YYYY-MM"
+  cashMonth: new Date().toISOString().substring(0, 7) 
 };
 
-// ================= CUSTOM APP ALERT & CONFIRM POPUP (REPLACES NATIVE BROWSER ALERTS) =================
 window.showAppAlert = function(message, title = 'Pemberitahuan Sistem', type = 'info', onConfirm = null) {
   const modal = document.getElementById('modalAppAlert');
   if (!modal) {
@@ -107,12 +101,10 @@ window.showAppConfirm = function(message, onConfirm, title = 'Konfirmasi Tindaka
   window.showAppAlert(message, title, 'warning', onConfirm);
 };
 
-// Override default window.alert globally!
 window.alert = function(msg) {
   window.showAppAlert(msg);
 };
 
-// Close modal on Escape or Enter
 document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape') {
     const alertModal = document.getElementById('modalAppAlert');
@@ -122,7 +114,6 @@ document.addEventListener('keydown', (e) => {
   }
 });
 
-// ================= INITIALIZATION =================
 document.addEventListener('DOMContentLoaded', () => {
   initDateInputs();
   bindNavigationEvents();
@@ -132,14 +123,11 @@ document.addEventListener('DOMContentLoaded', () => {
   bindAdminEvents();
   bindModalEvents();
 
-  // Load Initial Data
   loadInventory();
   loadPublicCashSummary();
 
-  // Check URL Hash & Restore View
   handleUrlHash();
 
-  // Listen to browser Back/Forward navigation
   window.addEventListener('hashchange', () => {
     handleUrlHash();
   });
@@ -180,7 +168,6 @@ function handleUrlHash() {
     return;
   }
 
-  // Fallback: restore last active view from localStorage
   const savedView = localStorage.getItem('iot_lab_active_view');
   const savedAdminTab = localStorage.getItem('iot_lab_admin_tab');
 
@@ -194,7 +181,6 @@ function handleUrlHash() {
   }
 }
 
-// ================= NAVIGATION =================
 function switchView(viewName, updateHash = true) {
   state.activeView = viewName;
   localStorage.setItem('iot_lab_active_view', viewName);
@@ -237,7 +223,6 @@ function bindNavigationEvents() {
   });
 }
 
-// ================= API HELPERS =================
 async function apiGet(endpoint) {
   const headers = {};
   if (state.auth.token) headers['Authorization'] = `Bearer ${state.auth.token}`;
@@ -264,7 +249,6 @@ async function apiPost(endpoint, data) {
   return res.json();
 }
 
-// ================= INVENTORY & CATALOG =================
 async function loadInventory() {
   try {
     const items = await apiGet('/api/inventory');
@@ -286,7 +270,6 @@ function populateCategoryFilters() {
     categories.map(c => `<option value="${escapeHtml(c)}">${escapeHtml(c)}</option>`).join('');
 }
 
-// Streamlined Compact Catalog Grid
 function renderCatalog() {
   const container = document.getElementById('catalogItemsGrid');
   if (!container) return;
@@ -360,7 +343,6 @@ function bindCatalogEvents() {
   document.getElementById('catalogPolicyFilter')?.addEventListener('change', renderCatalog);
 }
 
-// Show Item Detail Modal (Saves space on main catalog & admin table!)
 window.showItemDetailModal = function(itemId) {
   const item = state.inventory.find(i => i.id === itemId);
   if (!item) return;
@@ -384,7 +366,7 @@ window.showItemDetailModal = function(itemId) {
 
   modalBody.innerHTML = `
     <div class="item-detail-layout">
-      <!-- LEFT COLUMN: FOTO ALAT BESAR -->
+
       <div class="item-detail-visual">
         <div class="item-detail-image-wrapper">
           <img src="${itemImg}" alt="${escapeHtml(item.name)}" class="item-detail-img" onerror="this.src='/assets/logo-iot-lab.png'">
@@ -405,16 +387,14 @@ window.showItemDetailModal = function(itemId) {
         ` : ''}
       </div>
 
-      <!-- RIGHT COLUMN: INFORMASI DETAIL RAPI -->
       <div class="item-detail-info">
         <div class="item-detail-header-info">
           <span class="item-detail-category-tag">${escapeHtml(item.category)}</span>
           <h2 class="item-detail-title">${escapeHtml(item.name)}</h2>
         </div>
 
-        <!-- SPECS & METRICS GRID -->
         <div class="item-detail-grid">
-          <!-- Ketersediaan & Stok -->
+
           <div class="detail-spec-card">
             <div class="spec-card-icon">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -430,7 +410,6 @@ window.showItemDetailModal = function(itemId) {
             </div>
           </div>
 
-          <!-- Lokasi Simpan Fisik -->
           <div class="detail-spec-card">
             <div class="spec-card-icon">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -446,13 +425,11 @@ window.showItemDetailModal = function(itemId) {
           </div>
         </div>
 
-        <!-- Deskripsi & Spesifikasi Teknis -->
         <div class="detail-description-section">
           <span class="spec-label">Deskripsi & Spesifikasi Teknis</span>
           <p class="detail-description-text">${escapeHtml(item.description || 'Tidak ada deskripsi tambahan.')}</p>
         </div>
 
-        <!-- ACTIONS SECTION -->
         <div class="item-detail-actions-bar">
           ${state.activeView === 'admin' ? `
             <div style="display: flex; gap: 0.65rem; width: 100%; justify-content: flex-end;">
@@ -504,7 +481,6 @@ window.showItemDetailModal = function(itemId) {
   document.getElementById('modalItemDetail').classList.add('active');
 };
 
-// ================= VISUAL ITEM PICKER MODAL =================
 function populatePickerCategories() {
   const select = document.getElementById('pickerCategoryFilter');
   if (!select) return;
@@ -522,7 +498,6 @@ window.renderPickerGrid = function() {
   const searchQuery = (document.getElementById('pickerSearchInput')?.value || '').toLowerCase();
   const selectedCat = document.getElementById('pickerCategoryFilter')?.value || '';
 
-  // Filter strictly loanable items ONLY (loanable !== 'restricted')
   const loanableItems = state.inventory.filter(item => {
     if (item.loanable === 'restricted') return false;
     const matchSearch = item.name.toLowerCase().includes(searchQuery) ||
@@ -756,7 +731,6 @@ function bindLoanFormEvents() {
     pickerCategory.addEventListener('change', () => renderPickerGrid());
   }
 
-  // Button: Pratinjau / Auto-Generate PDF Surat
   const btnPreviewDraft = document.getElementById('btnPreviewDraftLetter');
   if (btnPreviewDraft) {
     btnPreviewDraft.addEventListener('click', async () => {
@@ -809,7 +783,6 @@ function bindLoanFormEvents() {
     });
   }
 
-  // Submit Form: Send Data + Uploaded Signed File in 1 step
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
@@ -879,13 +852,11 @@ function bindLoanFormEvents() {
 
       const result = await res.json();
 
-      // Reset form & cart
       form.reset();
       state.cart = [];
       renderFormSelectedItemsTable();
       renderCatalog();
 
-      // Switch to Track View & Load Status
       switchView('track');
       document.getElementById('trackUniqueIdInput').value = result.uniqueId;
       trackLoanRequest(result.uniqueId);
@@ -901,7 +872,6 @@ function bindLoanFormEvents() {
   });
 }
 
-// ================= OFFICIAL LETTER DOCUMENT MODAL =================
 function openOfficialLetterModal(data) {
   const { uniqueId, loan, qrCodeDataUrl } = data;
   const container = document.getElementById('officialLetterRenderContainer');
@@ -1008,13 +978,11 @@ function openOfficialLetterModal(data) {
         4. Surat ini wajib dicetak, ditandatangani basah, lalu diunggah kembali ke sistem untuk diverifikasi oleh pihak pengelola.
       </p>
 
-      <!-- Tracking ID before Signature -->
       <div style="margin-top: 1rem; padding: 0.5rem 0; border-top: 1px dashed #ccc; border-bottom: 1px dashed #ccc; font-size: 0.88rem; display: flex; justify-content: space-between; align-items: center;">
         <div>Unique Tracking ID: <strong style="font-family: 'JetBrains Mono', monospace; letter-spacing: 0.5px;">${uniqueId}</strong></div>
         <div style="font-size: 0.8rem; color: #555;">Status Dokumen: Permohonan Resmi</div>
       </div>
 
-      <!-- Signatures -->
       <div class="letter-signatures">
         <div class="sig-col">
           <p>Bandung, ${dateFormatted}</p>
@@ -1037,7 +1005,6 @@ function openOfficialLetterModal(data) {
         </div>
       </div>
 
-      <!-- Bottom QR Verification Footer -->
       <div style="margin-top: 1.5rem; display: flex; align-items: center; justify-content: space-between; border-top: 1px solid #000; padding-top: 0.75rem;">
         <div style="font-size: 0.78rem; color: #444;">
           <strong>Verifikasi Digital Dokumen:</strong><br>
@@ -1068,7 +1035,6 @@ window.proceedToUploadModal = function() {
   document.getElementById('modalUploadSigned').classList.add('active');
 };
 
-// ================= UPLOAD SIGNED DOCUMENT =================
 function bindModalEvents() {
   document.querySelectorAll('.modal-close, [data-close-modal]').forEach(btn => {
     btn.addEventListener('click', () => {
@@ -1137,7 +1103,6 @@ function bindModalEvents() {
   }
 }
 
-// ================= TRACKING SECTION =================
 function bindTrackEvents() {
   const btnTrack = document.getElementById('btnTrackRequest');
   const inputTrack = document.getElementById('trackUniqueIdInput');
@@ -1192,7 +1157,6 @@ async function trackLoanRequest(uniqueId) {
     const isBorrowed = loan.status === 'DIPINJAM' || loan.status === 'SELESAI';
     const isCompleted = loan.status === 'SELESAI';
 
-    // Timeline step statuses
     const step1Class = 'completed';
     const step2Class = isUploaded ? 'completed' : 'active';
     const step3Class = isApproved ? 'completed' : (isUploaded ? 'active' : '');
@@ -1203,7 +1167,7 @@ async function trackLoanRequest(uniqueId) {
 
     container.innerHTML = `
       <div class="track-card">
-        <!-- HEADER: TIKET & STATUS -->
+
         <div class="track-header">
           <div class="track-header-left">
             <div class="track-ticket-tag">
@@ -1215,7 +1179,7 @@ async function trackLoanRequest(uniqueId) {
             </div>
             <div class="track-ticket-id-row">
               <h1 class="track-ticket-id">${escapeHtml(loan.uniqueId)}</h1>
-              <button type="button" class="btn-copy-ticket" onclick="navigator.clipboard.writeText('${escapeHtml(loan.uniqueId)}'); alert('Nomor tiket berhasil disalin ke clipboard!');" title="Salin nomor tiket">
+              <button type="button" class="btn-copy-ticket" onclick="navigator.clipboard.writeText('${escapeHtml(loan.uniqueId)}'); alert('Nomor tiket berhasil disalin!');" title="Salin nomor tiket">
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                   <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
                   <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
@@ -1243,7 +1207,6 @@ async function trackLoanRequest(uniqueId) {
           </div>
         </div>
 
-        <!-- STEPPER / ALUR PROGRES -->
         <div class="track-stepper-box">
           <div class="track-stepper-header">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -1253,7 +1216,7 @@ async function trackLoanRequest(uniqueId) {
           </div>
 
           <div class="track-timeline">
-            <!-- Step 1 -->
+
             <div class="track-step ${step1Class}">
               <div class="track-step-node">${checkIcon}</div>
               <div class="track-step-body">
@@ -1262,7 +1225,6 @@ async function trackLoanRequest(uniqueId) {
               </div>
             </div>
 
-            <!-- Step 2 -->
             <div class="track-step ${step2Class}">
               <div class="track-step-node">${isUploaded ? checkIcon : '2'}</div>
               <div class="track-step-body">
@@ -1275,7 +1237,6 @@ async function trackLoanRequest(uniqueId) {
               </div>
             </div>
 
-            <!-- Step 3 -->
             <div class="track-step ${step3Class}">
               <div class="track-step-node">${isApproved ? checkIcon : '3'}</div>
               <div class="track-step-body">
@@ -1288,7 +1249,6 @@ async function trackLoanRequest(uniqueId) {
               </div>
             </div>
 
-            <!-- Step 4 -->
             <div class="track-step ${step4Class}">
               <div class="track-step-node">${isBorrowed ? checkIcon : '4'}</div>
               <div class="track-step-body">
@@ -1301,7 +1261,6 @@ async function trackLoanRequest(uniqueId) {
               </div>
             </div>
 
-            <!-- Step 5 -->
             <div class="track-step ${step5Class}">
               <div class="track-step-node">${isCompleted ? checkIcon : '5'}</div>
               <div class="track-step-body">
@@ -1316,9 +1275,8 @@ async function trackLoanRequest(uniqueId) {
           </div>
         </div>
 
-        <!-- 2-COLUMN STRUCTURED DATA -->
         <div class="track-info-grid">
-          <!-- Profil Peminjam Card -->
+
           <div class="track-info-card">
             <div class="track-info-card-header">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -1354,7 +1312,6 @@ async function trackLoanRequest(uniqueId) {
             </div>
           </div>
 
-          <!-- Jadwal & Lokasi Card -->
           <div class="track-info-card">
             <div class="track-info-card-header">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -1386,7 +1343,6 @@ async function trackLoanRequest(uniqueId) {
           </div>
         </div>
 
-        <!-- DAFTAR BARANG TABLE CARD -->
         <div class="track-items-card">
           <div class="track-items-header">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -1436,7 +1392,6 @@ async function trackLoanRequest(uniqueId) {
           </div>
         </div>
 
-        <!-- DOKUMEN & ACTION CTA BANNER -->
         ${!loan.documents.signedDocumentUrl ? `
           <div class="track-action-banner">
             <div class="track-action-banner-text">
@@ -1490,7 +1445,6 @@ window.reopenUploadForLoan = function(uniqueId) {
   document.getElementById('modalUploadSigned').classList.add('active');
 };
 
-// ================= PUBLIC CASH SUMMARY & GENERAL LEDGER =================
 async function loadPublicCashSummary() {
   try {
     const summary = await apiGet('/api/cash/summary');
@@ -1551,7 +1505,6 @@ async function loadPublicCashSummary() {
   }
 }
 
-// ================= ADMIN DASHBOARD =================
 function bindAdminEvents() {
   const loginForm = document.getElementById('formAdminLogin');
   loginForm?.addEventListener('submit', async (e) => {
@@ -1621,7 +1574,6 @@ function bindAdminEvents() {
     }
   });
 
-  // Form Pembayaran Kas Modal Popup (Quick Pay)
   document.getElementById('formQuickRecordPayment')?.addEventListener('submit', async (e) => {
     e.preventDefault();
     const memberId = document.getElementById('quickPayMemberId')?.value || document.getElementById('quickPayMemberSelect')?.value;
@@ -1669,7 +1621,6 @@ function bindAdminEvents() {
     }
   });
 
-  // Form Input Iuran Manual di Halaman Bawah
   document.getElementById('formRecordPayment')?.addEventListener('submit', async (e) => {
     e.preventDefault();
     const memberId = document.getElementById('payMemberSelect').value;
@@ -1731,7 +1682,6 @@ function bindAdminEvents() {
     }
   });
 
-  // Form Add Income (Modal)
   document.getElementById('formAddIncome')?.addEventListener('submit', async (e) => {
     e.preventDefault();
     const date = document.getElementById('addIncomeDate')?.value;
@@ -1768,7 +1718,6 @@ function bindAdminEvents() {
     }
   });
 
-  // Form Add Expense (Modal)
   document.getElementById('formAddExpense')?.addEventListener('submit', async (e) => {
     e.preventDefault();
     const date = document.getElementById('addExpenseDate')?.value;
@@ -1819,7 +1768,6 @@ function bindAdminEvents() {
     }
   });
 
-  // Finance Filter Listeners
   document.getElementById('financeSearchInput')?.addEventListener('input', () => {
     renderAdminFinanceTable();
   });
@@ -2002,7 +1950,6 @@ function switchAdminTab(tabName) {
   }
 }
 
-// Admin: Loans Management
 async function loadAdminLoans() {
   const container = document.getElementById('adminLoansTableBody');
   if (!container) return;
@@ -2104,7 +2051,6 @@ function renderAdminLoansTableRows(loans) {
       .join('')
       .toUpperCase();
 
-    // Ringkasan Singkat Barang
     const itemsList = loan.items || [];
     const totalItemsCount = itemsList.length;
     const totalUnits = itemsList.reduce((sum, it) => sum + (parseInt(it.qty) || 1), 0);
@@ -2204,7 +2150,6 @@ function renderAdminLoansTableRows(loans) {
   }).join('');
 }
 
-// Modal Detail Peminjaman (Admin Popup)
 window.openAdminLoanDetailModal = function(uniqueId) {
   const loan = (state.loans || []).find(l => l.uniqueId === uniqueId);
   if (!loan) return;
@@ -2241,7 +2186,7 @@ window.openAdminLoanDetailModal = function(uniqueId) {
   else if (loan.borrower.type === 'lab_lain') borrowerTypeLabel = "Laboratorium Lain";
 
   modalBody.innerHTML = `
-    <!-- 2 Column Info Cards -->
+
     <div class="track-info-grid" style="margin-bottom: 1.25rem;">
       <div class="track-info-card" style="padding: 1.15rem; background: var(--slate-50);">
         <div class="track-info-card-header">
@@ -2317,7 +2262,6 @@ window.openAdminLoanDetailModal = function(uniqueId) {
       </div>
     </div>
 
-    <!-- Items List Table -->
     <div class="card" style="margin-bottom: 1.25rem; padding: 0; overflow: hidden; border: 1px solid var(--border-color); border-radius: 12px; box-shadow: none;">
       <div style="padding: 0.75rem 1.15rem; background: var(--slate-50); border-bottom: 1px solid var(--border-color); display: flex; align-items: center; justify-content: space-between;">
         <h4 style="font-size: 0.88rem; font-weight: 800; color: var(--slate-900); margin: 0; display: flex; align-items: center; gap: 0.45rem;">
@@ -2352,14 +2296,13 @@ window.openAdminLoanDetailModal = function(uniqueId) {
       </div>
     </div>
 
-    <!-- Documents Card -->
     <div class="card" style="margin-bottom: 1.25rem; padding: 1.15rem; border: 1px solid var(--border-color); border-radius: 12px; box-shadow: none;">
       <h4 style="font-size: 0.88rem; font-weight: 800; color: var(--slate-900); margin: 0 0 0.85rem 0; display: flex; align-items: center; gap: 0.45rem;">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
         <span>Berkas & Dokumen Persyaratan</span>
       </h4>
       <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 0.85rem;">
-        <!-- Surat Resmi -->
+
         <div style="background: var(--slate-50); border: 1px solid var(--border-color); border-radius: 10px; padding: 0.85rem; display: flex; flex-direction: column; justify-content: space-between; gap: 0.65rem;">
           <div>
             <div style="font-size: 0.72rem; font-weight: 800; text-transform: uppercase; color: var(--slate-500);">Format Surat Resmi</div>
@@ -2370,7 +2313,6 @@ window.openAdminLoanDetailModal = function(uniqueId) {
           </button>
         </div>
 
-        <!-- Berkas Bertanda Tangan -->
         <div style="background: var(--slate-50); border: 1px solid var(--border-color); border-radius: 10px; padding: 0.85rem; display: flex; flex-direction: column; justify-content: space-between; gap: 0.65rem;">
           <div>
             <div style="font-size: 0.72rem; font-weight: 800; text-transform: uppercase; color: var(--slate-500);">Surat Bertanda Tangan</div>
@@ -2387,7 +2329,6 @@ window.openAdminLoanDetailModal = function(uniqueId) {
           `}
         </div>
 
-        <!-- Foto KTM / Identitas -->
         <div style="background: var(--slate-50); border: 1px solid var(--border-color); border-radius: 10px; padding: 0.85rem; display: flex; flex-direction: column; justify-content: space-between; gap: 0.65rem;">
           <div>
             <div style="font-size: 0.72rem; font-weight: 800; text-transform: uppercase; color: var(--slate-500);">Kartu Identitas / KTM</div>
@@ -2406,7 +2347,6 @@ window.openAdminLoanDetailModal = function(uniqueId) {
       </div>
     </div>
 
-    <!-- Administrative Actions -->
     <div class="card" style="padding: 1.15rem; border: 1.5px solid rgba(0, 91, 130, 0.2); border-radius: 12px; background: rgba(0, 91, 130, 0.02); box-shadow: none;">
       <h4 style="font-size: 0.88rem; font-weight: 800; color: var(--slate-900); margin: 0 0 0.75rem 0;">
         Tindakan Administratif Pengelola
@@ -2505,7 +2445,6 @@ window.promptRejectLoan = function(uniqueId) {
   }
 };
 
-// Streamlined High-Density Admin Inventory Table (Eliminates verbose columns & traffic-light badges!)
 function renderAdminInventoryTableRows(items) {
   const tbody = document.getElementById('adminInventoryTableBody');
   if (!tbody) return;
@@ -2560,11 +2499,9 @@ async function loadAdminInventoryTable() {
     const items = await apiGet('/api/inventory');
     state.inventory = items;
 
-    // Update count badge
     const countBadge = document.getElementById('inventoryCountBadge');
     if (countBadge) countBadge.textContent = `${items.length} Barang`;
 
-    // Populate Category Filter dropdown
     const catSelect = document.getElementById('adminInventoryCategoryFilter');
     if (catSelect) {
       const currentVal = catSelect.value;
@@ -2639,10 +2576,8 @@ window.openEditItemModal = function(itemId) {
   const item = state.inventory.find(i => i.id === itemId);
   if (!item) return;
 
-  // Close item detail modal if open
   document.getElementById('modalItemDetail')?.classList.remove('active');
 
-  // Fill in form values
   document.getElementById('editItemId').value = item.id;
   document.getElementById('editItemName').value = item.name || '';
   document.getElementById('editItemCategory').value = item.category || '';
@@ -2659,7 +2594,6 @@ window.openEditItemModal = function(itemId) {
   document.getElementById('modalEditInventory').classList.add('active');
 };
 
-// Aliased for button click compatibility
 window.editItemPrompt = window.openEditItemModal;
 
 window.deleteItemPrompt = function(itemId) {
@@ -2680,8 +2614,6 @@ window.deleteItemPrompt = function(itemId) {
     }
   });
 };
-
-// ================= CASH MANAGEMENT (MONTHLY DRILL-DOWN) =================
 
 async function populatePayMemberSelect() {
   const memberSelect = document.getElementById('payMemberSelect');
@@ -2704,7 +2636,6 @@ async function populatePayMemberSelect() {
   }
 }
 
-// Level 1: Load and Render Monthly Periods Overview
 async function loadAdminCashPeriods() {
   const tbody = document.getElementById('adminCashPeriodsTableBody');
   if (!tbody) return;
@@ -2713,7 +2644,6 @@ async function loadAdminCashPeriods() {
     const periods = await apiGet('/api/cash/periods');
     state.cashPeriods = periods || [];
 
-    // Ensure member dropdown in bottom form is ready
     populatePayMemberSelect();
 
     const badge = document.getElementById('cashPeriodsCountBadge');
@@ -2825,7 +2755,6 @@ function renderAdminCashPeriodsTableRows(periods) {
   }).join('');
 }
 
-// Level 2: Navigation to Selected Month Detail View (POPUP MODAL)
 window.openMonthDetail = function(period) {
   state.activeCashPeriod = period;
   state.cashMonth = period;
@@ -2875,7 +2804,6 @@ window.openSetTargetModal = function(period = "") {
     };
   }
 
-  // Look for existing period data
   const existing = (state.cashPeriods || []).find(p => p.period === selectedPeriod);
   if (existing) {
     if (targetInput) targetInput.value = existing.targetAmount;
@@ -2896,7 +2824,6 @@ window.editCurrentMonthTarget = function() {
   openSetTargetModal(state.activeCashPeriod);
 };
 
-// Level 2: Load Member Matrix for a Specific Month
 async function loadAdminCashMatrix(period) {
   const currentPeriod = period || state.activeCashPeriod || state.cashMonth || new Date().toISOString().substring(0, 7);
   state.activeCashPeriod = currentPeriod;
@@ -2911,7 +2838,6 @@ async function loadAdminCashMatrix(period) {
     state.cashTargetAmount = data.targetAmount || 0;
     state.cashTargetNotes = data.targetNotes || '';
 
-    // Format active month title
     let monthLabel = currentPeriod;
     const parts = currentPeriod.split('-');
     if (parts.length === 2) {
@@ -2934,7 +2860,6 @@ async function loadAdminCashMatrix(period) {
         (data.matrix || []).map(m => `<option value="${m.memberId}">${escapeHtml(m.name)} (${m.nim})</option>`).join('');
     }
 
-    // Compute executive metric strip stats
     const totalMembers = data.matrix.length;
     let totalTarget = 0;
     let totalPaid = 0;
@@ -2970,7 +2895,6 @@ async function loadAdminCashMatrix(period) {
     if (statPercentText) statPercentText.textContent = `${complianceRate}%`;
     if (statProgressBar) statProgressBar.style.width = `${complianceRate}%`;
 
-    // Bind search and filter
     const searchInput = document.getElementById('adminCashSearchInput');
     if (searchInput && !searchInput.dataset.bound) {
       searchInput.dataset.bound = "true";
@@ -3127,7 +3051,6 @@ window.quickPayModal = function(memberId, memberName, remaining) {
   const memberSelect = document.getElementById('quickPayMemberSelect');
   const btnFull = document.getElementById('btnQuickPayFull');
 
-  // Find member in state
   let member = (state.cashMatrix || []).find(m => m.memberId === memberId);
   if (!member && state.cashMembers) {
     member = state.cashMembers.find(m => m.id === memberId);
@@ -3161,7 +3084,7 @@ window.quickPayModal = function(memberId, memberName, remaining) {
     if (nameEl) nameEl.textContent = finalName;
     if (nimRoleEl) nimRoleEl.textContent = finalNim ? `${finalNim} • ${finalRole}` : finalRole;
     if (periodTagEl) periodTagEl.textContent = `Bulan: ${monthLabel}`;
-    
+
     window.currentQuickPayRemaining = rem;
     if (remainingTagEl) {
       remainingTagEl.textContent = rem > 0 ? `Sisa: ${formatRupiah(rem)}` : 'Status: Lunas';
@@ -3172,7 +3095,7 @@ window.quickPayModal = function(memberId, memberName, remaining) {
     if (btnFull) btnFull.textContent = rem > 0 ? `Bayar Lunas (${formatRupiah(rem)})` : 'Bayar Target (Rp 20.000)';
     if (notesInput) notesInput.value = `Iuran kas ${monthLabel} - ${finalName}`;
   } else {
-    // Generic open without specific member
+
     if (memberIdInput) memberIdInput.value = '';
     if (memberCard) memberCard.style.display = 'none';
     if (memberSelectGroup) {
@@ -3180,7 +3103,7 @@ window.quickPayModal = function(memberId, memberName, remaining) {
       const membersList = (state.cashMatrix && state.cashMatrix.length > 0) ? state.cashMatrix : (state.cashMembers || []);
       memberSelect.innerHTML = `<option value="">-- Pilih Anggota Lab --</option>` +
         membersList.map(m => `<option value="${m.memberId || m.id}">${escapeHtml(m.name)} (${m.nim})</option>`).join('');
-      
+
       memberSelect.onchange = function() {
         const selId = this.value;
         const selM = membersList.find(m => (m.memberId || m.id) === selId);
@@ -3204,7 +3127,6 @@ window.quickPayModal = function(memberId, memberName, remaining) {
   setTimeout(() => amountInput?.focus(), 100);
 };
 
-// ================= REKAPITULASI KEUANGAN TOTAL & ARUS KAS =================
 function formatIndoDate(dateStr) {
   if (!dateStr) return '-';
   const months = [
@@ -3293,7 +3215,6 @@ function consolidateCashTransactions(transactions) {
 
   const merged = [...consolidatedDues, ...otherTransactions];
 
-  // Sort chronologically ascending by period and date
   merged.sort((a, b) => {
     const da = a.period || (a.date ? a.date.substring(0, 7) : '');
     const db = b.period || (b.date ? b.date.substring(0, 7) : '');
@@ -3310,7 +3231,6 @@ function consolidateCashTransactions(transactions) {
     return da > db ? 1 : -1;
   });
 
-  // Calculate accurate running balance
   let runningBal = 0;
   merged.forEach(trx => {
     const amt = Number(trx.amount) || 0;
@@ -3332,7 +3252,6 @@ async function loadAdminFinanceLedger() {
       apiGet('/api/cash/transactions')
     ]);
 
-    // Update 4-card stat cards
     const balEl = document.getElementById('financeStatBalance');
     const incEl = document.getElementById('financeStatIncome');
     const expEl = document.getElementById('financeStatExpense');
@@ -3346,7 +3265,6 @@ async function loadAdminFinanceLedger() {
 
     if (cntEl) cntEl.textContent = `${consolidated.length}`;
 
-    // Save chronological (for PDF report) and reversed (for interactive screen view: newest first)
     state.financeTransactionsChronological = consolidated;
     state.financeTransactions = [...consolidated].reverse();
 
@@ -3367,16 +3285,14 @@ function renderAdminFinanceTable() {
 
   const list = state.financeTransactions || [];
   const filtered = list.filter(trx => {
-    // Type filter
+
     if (typeFilter && trx.type !== typeFilter) return false;
 
-    // Month filter (YYYY-MM)
     if (monthFilter) {
       const trxMonth = (trx.period || trx.date || '').substring(0, 7);
       if (trxMonth !== monthFilter) return false;
     }
 
-    // Search filter
     if (search) {
       const desc = (trx.description || '').toLowerCase();
       const name = (trx.memberName || '').toLowerCase();
@@ -3486,7 +3402,6 @@ window.openFinancePdfModal = function() {
     });
   }
 
-  // Calculate totals for report scope
   let totalIn = 0;
   let totalOut = 0;
   reportTransactions.forEach(t => {
@@ -3551,7 +3466,6 @@ window.openFinancePdfModal = function() {
       Periode Laporan: <strong>${periodLabel}</strong> &nbsp;|&nbsp; Tanggal Cetak: ${todayIndo}
     </div>
 
-    <!-- Executive Summary Strip -->
     <div class="pdf-summary-grid">
       <div class="pdf-summary-card">
         <div class="pdf-summary-card-label">Total Pemasukan</div>
@@ -3571,7 +3485,6 @@ window.openFinancePdfModal = function() {
       </div>
     </div>
 
-    <!-- Table of Transactions (STRICTLY NO ID COLUMNS) -->
     <table class="pdf-table">
       <thead>
         <tr>
@@ -3598,7 +3511,6 @@ window.openFinancePdfModal = function() {
       </tfoot>
     </table>
 
-    <!-- Signature Section -->
     <div class="pdf-signatures">
       <div class="pdf-sig-box">
         <div>Mengetahui,</div>
@@ -3617,9 +3529,6 @@ window.openFinancePdfModal = function() {
     </div>
   `;
 
-  // Calculate dynamic page count:
-  // Up to 11 rows fits comfortably on Page 1 (min-height ~245mm).
-  // More than 11 rows spans to Page 2 (min-height ~475mm).
   const rowCount = reportTransactions.length;
   let pages = 1;
   if (rowCount > 11) {
@@ -3631,7 +3540,6 @@ window.openFinancePdfModal = function() {
 
   document.getElementById('modalFinancePdfPreview')?.classList.add('active');
 
-  // Fine-tune page count based on rendered DOM height
   setTimeout(() => {
     const table = container.querySelector('.pdf-table');
     if (table) {
@@ -3681,7 +3589,6 @@ window.openAddExpenseModal = function() {
   modal?.classList.add('active');
 };
 
-// ================= UTILITIES =================
 function formatRupiah(number) {
   const num = parseInt(number) || 0;
   return new Intl.NumberFormat('id-ID', {

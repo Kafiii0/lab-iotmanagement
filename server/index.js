@@ -9,7 +9,6 @@ const { readDb, writeDb } = require('./db');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Ensure upload folders exist
 const UPLOAD_BASE = path.join(__dirname, '..', 'uploads');
 const UPLOAD_LOANS = path.join(UPLOAD_BASE, 'loans');
 const UPLOAD_RECEIPTS = path.join(UPLOAD_BASE, 'receipts');
@@ -21,7 +20,6 @@ const UPLOAD_ITEMS = path.join(UPLOAD_BASE, 'items');
   }
 });
 
-// Multer storage configuration
 const loanStorage = multer.diskStorage({
   destination: (req, file, cb) => cb(null, UPLOAD_LOANS),
   filename: (req, file, cb) => {
@@ -51,7 +49,7 @@ const itemStorage = multer.diskStorage({
 
 const uploadLoan = multer({
   storage: loanStorage,
-  limits: { fileSize: 10 * 1024 * 1024 } // 10MB
+  limits: { fileSize: 10 * 1024 * 1024 } 
 });
 
 const uploadReceipt = multer({
@@ -64,27 +62,21 @@ const uploadItem = multer({
   limits: { fileSize: 10 * 1024 * 1024 }
 });
 
-// Middleware
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Serve static files
 app.use('/uploads', express.static(UPLOAD_BASE));
 app.use(express.static(path.join(__dirname, '..', 'public')));
 
-// Simple Auth Middleware
 function requireAdmin(req, res, next) {
   const token = req.headers['authorization'];
   if (token && token.startsWith('Bearer iot-admin-token-')) {
     return next();
   }
-  return res.status(401).json({ error: "Unauthorized. Akses khusus pengelola Lab IoT." });
+  return res.status(401).json({ error: "Akses ditolak. Khusus pengelola Lab IoT." });
 }
 
-// ==========================================
-// 1. AUTH ROUTES
-// ==========================================
 app.post('/api/auth/login', (req, res) => {
   const { username, password } = req.body;
   const db = readDb();
@@ -119,9 +111,6 @@ app.get('/api/auth/me', (req, res) => {
   return res.json({ authenticated: false });
 });
 
-// ==========================================
-// 2. INVENTORY ROUTES
-// ==========================================
 app.get('/api/inventory', (req, res) => {
   const db = readDb();
   res.json(db.inventory);
@@ -223,12 +212,11 @@ app.delete('/api/inventory/:id', requireAdmin, (req, res) => {
   res.json({ success: true, deleted: deleted[0] });
 });
 
-// Generate QR Code for item
 app.get('/api/inventory/:id/qrcode', async (req, res) => {
   const { id } = req.params;
   const db = readDb();
   const item = db.inventory.find(i => i.id === id);
-  if (!item) return res.status(404).send("Item not found");
+  if (!item) return res.status(404).json({ error: "Barang tidak ditemukan." });
 
   const qrText = `IOT-LAB-ITEM:${item.id}|${item.name}|LOC:${item.location}`;
   try {
@@ -239,24 +227,19 @@ app.get('/api/inventory/:id/qrcode', async (req, res) => {
   }
 });
 
-// ==========================================
-// 3. LOAN & DOCUMENT ROUTES (AUTO-GENERATE SURAT & UNIQUE ID)
-// ==========================================
-
-// STEP 1: Generate Request & Official Letter Data (Auto Generate Document & Unique ID)
 app.post('/api/loans/generate-request', async (req, res) => {
   try {
     const {
       borrowerName,
       borrowerNim,
-      borrowerType, // 'internal_lab' | 'ormawa' | 'ukm' | 'lab_lain' | 'mahasiswa_luar'
+      borrowerType, 
       institutionName,
       whatsapp,
       email,
       purpose,
       borrowDate,
       returnDate,
-      items // Array of { itemId, qty }
+      items 
     } = req.body;
 
     if (!borrowerName || !borrowerNim || !whatsapp || !borrowDate || !returnDate || !items || !items.length) {
@@ -265,7 +248,6 @@ app.post('/api/loans/generate-request', async (req, res) => {
 
     const db = readDb();
 
-    // Verify items and loan policies
     const processedItems = [];
     for (const reqItem of items) {
       const invItem = db.inventory.find(i => i.id === reqItem.itemId);
@@ -273,7 +255,6 @@ app.post('/api/loans/generate-request', async (req, res) => {
         return res.status(400).json({ error: `Barang dengan ID ${reqItem.itemId} tidak ditemukan di sistem.` });
       }
 
-      // Check loanable policy
       if (invItem.loanable === 'restricted') {
         return res.status(400).json({
           error: `Barang "${invItem.name}" adalah ASET TETAP LAB dan TIDAK DIIZINKAN untuk dipinjam.`
@@ -303,21 +284,19 @@ app.post('/api/loans/generate-request', async (req, res) => {
       });
     }
 
-    // Generate strict Unique ID: e.g., IOT-REQ-202609-7B2F
     const now = new Date();
     const year = now.getFullYear();
     const month = String(now.getMonth() + 1).padStart(2, '0');
     const randomHex = Math.random().toString(36).substring(2, 6).toUpperCase();
     const uniqueId = `IOT-REQ-${year}${month}-${randomHex}`;
 
-    // Generate QR verification data for the printed document
     const qrDataText = `https://iotlab.telkomuniversity.ac.id/track/${uniqueId}`;
     const qrCodeDataUrl = await QRCode.toDataURL(qrDataText, { width: 180, margin: 1 });
 
     const newLoan = {
       uniqueId,
       createdAt: now.toISOString(),
-      status: "SURAT_DIGENERATE", // SURAT_DIGENERATE -> MENUNGGU_VERIFIKASI -> DISETUJUI -> DIPINJAM -> SELESAI | DITOLAK
+      status: "SURAT_DIGENERATE", 
       statusLabel: "Surat Dibuat (Menunggu Upload Berkas)",
       borrower: {
         name: borrowerName.trim(),
@@ -347,7 +326,6 @@ app.post('/api/loans/generate-request', async (req, res) => {
       qrCodeDataUrl
     };
 
-    // Save to database
     db.loans.push(newLoan);
     writeDb(db);
 
@@ -358,12 +336,11 @@ app.post('/api/loans/generate-request', async (req, res) => {
       qrCodeDataUrl
     });
   } catch (err) {
-    console.error("Error generating loan request:", err);
+    console.error("Gagal membuat pengajuan peminjaman:", err);
     res.status(500).json({ error: "Terjadi kesalahan sistem saat membuat permohonan." });
   }
 });
 
-// STEP 2: Final Submit - Upload Signed Document & ID Card bound to Unique ID
 app.post('/api/loans/upload-document', uploadLoan.fields([
   { name: 'signedDocument', maxCount: 1 },
   { name: 'idCard', maxCount: 1 }
@@ -406,7 +383,6 @@ app.post('/api/loans/upload-document', uploadLoan.fields([
   });
 });
 
-// STEP 3: Direct Full Submission (Data + Uploaded Signed File in 1 request)
 app.post('/api/loans/submit-full-request', uploadLoan.fields([
   { name: 'signedDocument', maxCount: 1 },
   { name: 'idCard', maxCount: 1 }
@@ -446,7 +422,6 @@ app.post('/api/loans/submit-full-request', uploadLoan.fields([
 
     const db = readDb();
 
-    // Verify items and policies
     const processedItems = [];
     for (const reqItem of items) {
       const invItem = db.inventory.find(i => i.id === reqItem.itemId);
@@ -533,12 +508,11 @@ app.post('/api/loans/submit-full-request', uploadLoan.fields([
     });
 
   } catch (err) {
-    console.error("Error submitting full loan request:", err);
+    console.error("Gagal mengirim permohonan peminjaman:", err);
     res.status(500).json({ error: "Terjadi kesalahan sistem saat mengirim permohonan." });
   }
 });
 
-// Track loan by Unique ID (Public)
 app.get('/api/loans/track/:uniqueId', (req, res) => {
   const { uniqueId } = req.params;
   const db = readDb();
@@ -549,7 +523,6 @@ app.get('/api/loans/track/:uniqueId', (req, res) => {
   res.json(loan);
 });
 
-// List all loans (Admin)
 app.get('/api/loans', requireAdmin, (req, res) => {
   const { status } = req.query;
   const db = readDb();
@@ -560,11 +533,9 @@ app.get('/api/loans', requireAdmin, (req, res) => {
   res.json(loans);
 });
 
-// Update loan status (Admin Workflow)
 app.patch('/api/loans/:uniqueId/status', requireAdmin, (req, res) => {
   const { uniqueId } = req.params;
   const { newStatus, notes } = req.body;
-  // newStatus can be: "DISETUJUI", "DIPINJAM", "SELESAI", "DITOLAK"
 
   const db = readDb();
   const loan = db.loans.find(l => l.uniqueId === uniqueId);
@@ -582,7 +553,7 @@ app.patch('/api/loans/:uniqueId/status', requireAdmin, (req, res) => {
     loan.audit.verifiedBy = db.admin.name;
     if (notes) loan.audit.notes = notes;
   } else if (newStatus === "DIPINJAM") {
-    // Serah terima fisik: potong stok barang
+
     if (prevStatus !== "DIPINJAM") {
       for (const reqItem of loan.items) {
         const inv = db.inventory.find(i => i.id === reqItem.itemId);
@@ -597,7 +568,7 @@ app.patch('/api/loans/:uniqueId/status', requireAdmin, (req, res) => {
     loan.audit.handoverAt = nowStr;
     if (notes) loan.audit.notes = notes;
   } else if (newStatus === "SELESAI") {
-    // Pengembalian fisik: kembalikan stok
+
     if (prevStatus === "DIPINJAM") {
       for (const reqItem of loan.items) {
         const inv = db.inventory.find(i => i.id === reqItem.itemId);
@@ -623,11 +594,6 @@ app.patch('/api/loans/:uniqueId/status', requireAdmin, (req, res) => {
   res.json({ success: true, loan });
 });
 
-// ==========================================
-// 4. CASH MANAGEMENT ROUTES (DYNAMIC TARGETS)
-// ==========================================
-
-// Get Cash Dashboard Summary
 app.get('/api/cash/summary', (req, res) => {
   const db = readDb();
   let totalIncome = 0;
@@ -652,7 +618,6 @@ app.get('/api/cash/summary', (req, res) => {
   });
 });
 
-// Get Monthly Periods Summary (Overview of all months for admin)
 app.get('/api/cash/periods', requireAdmin, (req, res) => {
   const db = readDb();
 
@@ -722,20 +687,18 @@ app.get('/api/cash/periods', requireAdmin, (req, res) => {
   res.json(periodsData);
 });
 
-// Get list of all registered cash members
 app.get('/api/cash/members', (req, res) => {
   const db = readDb();
   res.json(db.cashMembers || []);
 });
 
-// Get/Set Dynamic Monthly Targets
 app.get('/api/cash/targets', (req, res) => {
   const db = readDb();
   res.json(db.monthlyTargets);
 });
 
 app.post('/api/cash/targets', requireAdmin, (req, res) => {
-  const { period, targetAmount, notes } = req.body; // period: "2026-09"
+  const { period, targetAmount, notes } = req.body; 
   if (!period || targetAmount === undefined) {
     return res.status(400).json({ error: "Periode (YYYY-MM) dan nominal target wajib diisi." });
   }
@@ -750,15 +713,13 @@ app.post('/api/cash/targets', requireAdmin, (req, res) => {
   res.json({ success: true, period, target: db.monthlyTargets[period] });
 });
 
-// Get Member Matrix for a specific month
 app.get('/api/cash/matrix', (req, res) => {
-  const period = req.query.month || new Date().toISOString().substring(0, 7); // "2026-09"
+  const period = req.query.month || new Date().toISOString().substring(0, 7); 
   const db = readDb();
 
   const targetObj = db.monthlyTargets[period] || { targetAmount: 20000, notes: "Target Standar" };
   const targetAmount = targetObj.targetAmount;
 
-  // Filter dues payments for this period
   const duesForPeriod = db.cashTransactions.filter(
     t => t.type === 'income_dues' && t.period === period
   );
@@ -804,7 +765,6 @@ app.get('/api/cash/matrix', (req, res) => {
   });
 });
 
-// Record Dues Payment (Kas Anggota)
 app.post('/api/cash/pay', requireAdmin, (req, res) => {
   const { memberId, period, amount, paymentMethod, notes } = req.body;
   if (!memberId || !period || !amount) {
@@ -837,7 +797,6 @@ app.post('/api/cash/pay', requireAdmin, (req, res) => {
   res.json({ success: true, transaction: newTrx });
 });
 
-// Record Operational Lab Expense with optional receipt
 app.post('/api/cash/expenses', requireAdmin, uploadReceipt.single('receipt'), (req, res) => {
   const { category, amount, paymentMethod, description } = req.body;
   if (!category || !amount || !description) {
@@ -865,7 +824,6 @@ app.post('/api/cash/expenses', requireAdmin, uploadReceipt.single('receipt'), (r
   res.json({ success: true, expense: newExpense });
 });
 
-// Record External / Other Income
 app.post('/api/cash/incomes', requireAdmin, (req, res) => {
   const { sourceName, amount, paymentMethod, notes, date } = req.body;
   if (!sourceName || !amount) {
@@ -895,13 +853,11 @@ app.post('/api/cash/incomes', requireAdmin, (req, res) => {
   res.json({ success: true, income: newIncome });
 });
 
-// Get all Cash Transactions
 app.get('/api/cash/transactions', (req, res) => {
   const db = readDb();
   res.json([...db.cashTransactions].reverse());
 });
 
-// Member Management
 app.get('/api/cash/members', (req, res) => {
   const db = readDb();
   res.json(db.cashMembers);
@@ -927,7 +883,6 @@ app.post('/api/cash/members', requireAdmin, (req, res) => {
   res.status(201).json(newMember);
 });
 
-// Start server
 app.listen(PORT, () => {
   console.log(`=== SISTEM LAB IOT TELKOM UNIVERSITY BERJALAN ===`);
   console.log(`Port: http://localhost:${PORT}`);

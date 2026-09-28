@@ -3,7 +3,6 @@ const path = require('path');
 
 const DATA_FILE = path.join(__dirname, '..', 'data', 'database.json');
 
-// Initial seed data with authentic Telkom University IoT Laboratory assets
 const initialData = {
   admin: {
     username: "admin_iot",
@@ -22,7 +21,7 @@ const initialData = {
       borrowedStock: 3,
       unit: "Unit",
       condition: "Baik",
-      loanable: "all", // "all" | "internal_only" | "restricted"
+      loanable: "all", 
       loanPolicyText: "Boleh Dipinjam (Umum & Internal)",
       description: "Dual-core 240MHz, WiFi & BLE 4.2 integrasi, 38 pin GPIO."
     },
@@ -164,7 +163,7 @@ const initialData = {
     { id: "MBR-07", nim: "1101220124", name: "Farhan Maulana", role: "Asisten Lab", active: true },
     { id: "MBR-08", nim: "1101220140", name: "Siti Nurhaliza", role: "Asisten Lab", active: true }
   ],
-  // Dynamic monthly target configuration: key is "YYYY-MM"
+
   monthlyTargets: {
     "2026-07": { targetAmount: 0, notes: "Libur Semester Genap (Bebas Kas)" },
     "2026-08": { targetAmount: 15000, notes: "Awal Semester Ganjil" },
@@ -177,7 +176,7 @@ const initialData = {
     {
       id: "CASH-TRX-001",
       date: "2026-08-05",
-      type: "income_dues", // "income_dues" | "income_other" | "expense"
+      type: "income_dues", 
       memberId: "MBR-01",
       memberName: "Muhammad Fadhil",
       period: "2026-08",
@@ -248,7 +247,6 @@ const initialData = {
   ]
 };
 
-// Ensure data folder exists
 function initDb() {
   const dir = path.dirname(DATA_FILE);
   if (!fs.existsSync(dir)) {
@@ -265,7 +263,7 @@ function readDb() {
     const raw = fs.readFileSync(DATA_FILE, 'utf-8');
     return JSON.parse(raw);
   } catch (err) {
-    console.error("Error reading database:", err);
+    console.error("Gagal membaca basis data:", err);
     return initialData;
   }
 }

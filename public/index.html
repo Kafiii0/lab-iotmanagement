@@ -12,7 +12,6 @@
 </head>
 <body>
 
-  <!-- ================= TOP HEADER ================= -->
   <header class="top-header no-print">
     <div class="header-container">
       <a href="#" class="brand-wrapper" data-view="catalog">
@@ -24,7 +23,6 @@
         </div>
       </a>
 
-      <!-- Clean Open Navigation -->
       <nav class="main-nav">
         <button class="nav-link active" data-view="catalog">
           <span>Form Peminjaman</span>
@@ -39,7 +37,6 @@
     </div>
   </header>
 
-  <!-- ================= MOBILE BOTTOM NAV ================= -->
   <nav class="mobile-nav-bar no-print">
     <div class="mobile-nav-items">
       <button class="mobile-nav-btn active" data-view="catalog">
@@ -54,10 +51,8 @@
     </div>
   </nav>
 
-  <!-- ================= MAIN CONTENT ================= -->
   <main class="main-content">
 
-    <!-- VIEW 1: FORMULIR PEMINJAMAN LANGSUNG -->
     <section id="view-catalog" class="view-section active">
       <div class="card-form">
         <div class="form-header">
@@ -190,12 +185,11 @@
       </div>
     </section>
 
-    <!-- VIEW 2: PELACAKAN STATUS -->
     <section id="view-track" class="view-section">
       <div class="track-hero-box no-print">
         <h2 class="track-hero-title">Lacak Permohonan Peminjaman</h2>
         <p class="track-hero-subtitle">Pantau progres verifikasi berkas resmi, persetujuan laboran, hingga jadwal pengambilan barang secara real-time.</p>
-        
+
         <div class="track-search-card">
           <div class="track-search-input-group">
             <div class="track-search-icon">
@@ -219,14 +213,12 @@
       </div>
 
       <div id="trackResultContainer" class="track-result-wrapper">
-        <!-- Rendered dynamically -->
+
       </div>
     </section>
 
-    <!-- VIEW 3: ADMIN PENGELOLA -->
     <section id="view-admin" class="view-section">
 
-      <!-- Login Card -->
       <div id="adminLoginCard" class="login-page-wrapper" style="display: none;">
         <div class="login-glow-blob blob-1"></div>
         <div class="login-glow-blob blob-2"></div>
@@ -287,11 +279,9 @@
         </div>
       </div>
 
-      <!-- Dashboard Panel -->
       <div id="adminDashboardCard" class="admin-dashboard-container" style="display: none;">
         <div class="admin-layout-wrapper">
-          
-          <!-- SIDEBAR NAVIGATION (Desktop Left / Mobile Bottom Navbar) -->
+
           <aside class="admin-sidebar">
             <div class="admin-sidebar-profile">
               <div class="admin-avatar-box">
@@ -364,7 +354,6 @@
             </div>
           </aside>
 
-          <!-- MAIN CONTENT VIEWPORT -->
           <main class="admin-main-viewport">
             <div class="admin-top-header">
               <div>
@@ -381,7 +370,6 @@
               </button>
             </div>
 
-            <!-- SUBTAB 1: LOANS MANAGEMENT -->
             <div id="admin-tab-loans" class="admin-tab-pane">
               <div class="card" style="padding: 0; overflow: hidden; border: 1px solid var(--border-color); border-radius: 16px; box-shadow: 0 4px 20px -5px rgba(15, 23, 42, 0.05);">
                 <div class="inventory-toolbar-header">
@@ -435,14 +423,13 @@
                       </tr>
                     </thead>
                     <tbody id="adminLoansTableBody">
-                      <!-- Rendered dynamically -->
+
                     </tbody>
                   </table>
                 </div>
               </div>
             </div>
 
-        <!-- SUBTAB 2: INVENTORY MANAGEMENT -->
         <div id="admin-tab-inventory" class="admin-tab-pane" style="display: none;">
           <div class="card" style="padding: 0; overflow: hidden; border: 1px solid var(--border-color); border-radius: 16px; box-shadow: 0 4px 20px -5px rgba(15, 23, 42, 0.05);">
             <div class="inventory-toolbar-header">
@@ -489,17 +476,15 @@
                   </tr>
                 </thead>
                 <tbody id="adminInventoryTableBody">
-                  <!-- Rendered dynamically -->
+
                 </tbody>
               </table>
             </div>
           </div>
         </div>
 
-        <!-- SUBTAB 3: CASH & DYNAMIC TARGET MANAGEMENT -->
         <div id="admin-tab-cash" class="admin-tab-pane" style="display: none;">
 
-          <!-- ================= LEVEL 1: OVERVIEW DAFTAR PERIODE KAS BULANAN ================= -->
           <div id="cashViewPeriods" class="cash-view-pane">
             <div class="card" style="padding: 0; overflow: hidden; border: 1px solid var(--border-color); border-radius: 16px; box-shadow: 0 4px 20px -5px rgba(15, 23, 42, 0.05); margin-bottom: 1.5rem;">
               <div class="inventory-toolbar-header">
@@ -544,7 +529,7 @@
                     </tr>
                   </thead>
                   <tbody id="adminCashPeriodsTableBody">
-                    <!-- Rendered dynamically -->
+
                   </tbody>
                 </table>
               </div>
@@ -552,9 +537,8 @@
           </div>
         </div>
 
-        <!-- SUBTAB 4: TOTAL FINANCE & CASHFLOW LEDGER -->
         <div id="admin-tab-finance" class="admin-tab-pane" style="display: none;">
-          <!-- 4-Stat Metric Summary Strip -->
+
           <div class="cash-stats-grid" style="margin-top: 0; margin-bottom: 1.25rem;">
             <div class="cash-stat-card">
               <div class="cash-stat-label">
@@ -593,7 +577,6 @@
             </div>
           </div>
 
-          <!-- Main Ledger Card -->
           <div class="card" style="padding: 0; overflow: hidden; border: 1px solid var(--border-color); border-radius: 16px; box-shadow: 0 4px 20px -5px rgba(15, 23, 42, 0.05); margin-bottom: 1.5rem;">
             <div class="inventory-toolbar-header" style="flex-wrap: wrap; gap: 0.85rem;">
               <div class="inventory-header-info">
@@ -655,7 +638,7 @@
                   </tr>
                 </thead>
                 <tbody id="adminFinanceTableBody">
-                  <!-- Rendered dynamically -->
+
                 </tbody>
               </table>
             </div>
@@ -668,7 +651,6 @@
 
   </main>
 
-  <!-- ================= MODAL: DETAIL PERMOHONAN PEMINJAMAN (ADMIN POPUP) ================= -->
   <div id="modalAdminLoanDetail" class="modal-overlay">
     <div class="modal-box" style="max-width: 860px; width: 95%; max-height: 90vh;">
       <div class="modal-header">
@@ -698,7 +680,7 @@
       </div>
 
       <div class="modal-body" id="adminLoanDetailModalBody" style="padding: 1.5rem; overflow-y: auto;">
-        <!-- Rendered dynamically -->
+
       </div>
 
       <div class="modal-footer" id="adminLoanDetailModalFooter" style="padding: 0.85rem 1.5rem; background: var(--slate-50); border-top: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center;">
@@ -710,7 +692,6 @@
     </div>
   </div>
 
-  <!-- ================= MODAL 1: DETAIL BARANG INVENTARIS ================= -->
   <div id="modalItemDetail" class="modal-overlay">
     <div class="modal-box" style="max-width: 820px; width: 94%;">
       <div class="modal-header">
@@ -721,7 +702,7 @@
         <button class="modal-close">&times;</button>
       </div>
       <div class="modal-body" id="itemDetailModalBody" style="padding: 1.5rem;">
-        <!-- Rendered dynamically -->
+
       </div>
       <div class="modal-footer" style="padding: 0.85rem 1.5rem; background: var(--slate-50); border-top: 1px solid var(--border-color);">
         <button type="button" class="btn btn-outline" data-close-modal>Tutup</button>
@@ -729,7 +710,6 @@
     </div>
   </div>
 
-  <!-- ================= MODAL 2: OFFICIAL LETTER PRINT & PREVIEW ================= -->
   <div id="modalOfficialLetter" class="modal-overlay">
     <div class="modal-box" style="max-width: 860px;">
       <div class="modal-header no-print">
@@ -744,7 +724,7 @@
 
       <div class="modal-body" style="background: var(--slate-200); padding: 1.5rem;">
         <div id="officialLetterRenderContainer">
-          <!-- Rendered dynamically -->
+
         </div>
       </div>
 
@@ -760,7 +740,6 @@
     </div>
   </div>
 
-  <!-- ================= MODAL 3: UPLOAD SIGNED DOCUMENT ================= -->
   <div id="modalUploadSigned" class="modal-overlay">
     <div class="modal-box" style="max-width: 500px;">
       <div class="modal-header">
@@ -797,7 +776,6 @@
     </div>
   </div>
 
-  <!-- ================= MODAL 4: TAMBAH INVENTARIS ================= -->
   <div id="modalAddInventory" class="modal-overlay">
     <div class="modal-box" style="max-width: 560px;">
       <div class="modal-header">
@@ -865,7 +843,6 @@
     </div>
   </div>
 
-  <!-- ================= MODAL 4B: EDIT INVENTARIS ================= -->
   <div id="modalEditInventory" class="modal-overlay">
     <div class="modal-box" style="max-width: 600px; width: 92%;">
       <div class="modal-header">
@@ -942,7 +919,6 @@
     </div>
   </div>
 
-  <!-- ================= MODAL 5: QR CODE BARANG ================= -->
   <div id="modalItemQr" class="modal-overlay">
     <div class="modal-box" style="max-width: 420px;">
       <div class="modal-header no-print">
@@ -950,7 +926,7 @@
         <button class="modal-close">&times;</button>
       </div>
       <div class="modal-body" id="qrModalContent">
-        <!-- Rendered dynamically -->
+
       </div>
       <div class="modal-footer no-print">
         <button type="button" class="btn btn-outline" data-close-modal>Tutup</button>
@@ -959,7 +935,6 @@
     </div>
   </div>
 
-  <!-- ================= MODAL 6: VISUAL ITEM PICKER (KATALOG POPUP) ================= -->
   <div id="modalItemPicker" class="modal-overlay">
     <div class="modal-box" style="max-width: 860px; width: 95%;">
       <div class="modal-header">
@@ -970,7 +945,7 @@
         <button class="modal-close">&times;</button>
       </div>
       <div class="modal-body" style="padding: 1rem 1.25rem;">
-        <!-- Filters inside modal -->
+
         <div style="display: flex; gap: 0.75rem; margin-bottom: 1.25rem; flex-wrap: wrap;">
           <input type="text" id="pickerSearchInput" class="form-control" placeholder="Cari nama barang..." style="flex: 1; min-width: 200px;">
           <select id="pickerCategoryFilter" class="form-control" style="width: 200px;">
@@ -978,9 +953,8 @@
           </select>
         </div>
 
-        <!-- Grid of visual card blocks -->
         <div id="pickerGridContainer" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 1rem; max-height: 55vh; overflow-y: auto; padding-right: 4px;">
-          <!-- Rendered dynamically -->
+
         </div>
       </div>
       <div class="modal-footer" style="display: flex; justify-content: space-between; align-items: center;">
@@ -990,7 +964,6 @@
     </div>
   </div>
 
-  <!-- ================= MODAL 7: ATUR TARGET KAS BULANAN ================= -->
   <div id="modalSetCashTarget" class="modal-overlay">
     <div class="modal-box" style="max-width: 520px; width: 94%;">
       <div class="modal-header">
@@ -1035,7 +1008,6 @@
     </div>
   </div>
 
-  <!-- ================= MODAL 8: POPUP DAFTAR ANGGOTA & RINCIAN KAS PER BULAN ================= -->
   <div id="modalMonthCashDetail" class="modal-overlay">
     <div class="modal-box" style="max-width: 1200px; width: 96%; max-height: 90vh;">
       <div class="modal-header">
@@ -1073,7 +1045,7 @@
       </div>
 
       <div class="modal-body" style="padding: 1.25rem 1.5rem; overflow-y: auto;">
-        <!-- 4-Stat Metric Summary Strip -->
+
         <div class="cash-stats-grid" style="margin-top: 0; margin-bottom: 1.25rem;">
           <div class="cash-stat-card">
             <div class="cash-stat-label">
@@ -1114,7 +1086,6 @@
           </div>
         </div>
 
-        <!-- Matriks Iuran Anggota -->
         <div class="card" style="margin-bottom: 0.5rem; padding: 0; overflow: hidden; border: 1px solid var(--border-color); border-radius: 14px; box-shadow: 0 2px 10px rgba(15, 23, 42, 0.04);">
           <div class="inventory-toolbar-header" style="padding: 0.85rem 1.15rem;">
             <div class="inventory-header-info">
@@ -1164,7 +1135,7 @@
                 </tr>
               </thead>
               <tbody id="adminCashMatrixTableBody">
-                <!-- Rendered dynamically -->
+
               </tbody>
             </table>
           </div>
@@ -1184,7 +1155,6 @@
     </div>
   </div>
 
-  <!-- ================= MODAL 9: POPUP CATAT PEMBAYARAN IURAN KAS ================= -->
   <div id="modalRecordPayment" class="modal-overlay">
     <div class="modal-box" style="max-width: 560px; width: 95%;">
       <div class="modal-header">
@@ -1205,7 +1175,7 @@
 
       <form id="formQuickRecordPayment">
         <div class="modal-body" style="padding: 1.25rem 1.5rem;">
-          <!-- Member Info Preview Box -->
+
           <div class="quick-pay-member-card" id="quickPayMemberCard">
             <div class="quick-pay-avatar" id="quickPayAvatar">DR</div>
             <div class="quick-pay-meta" style="flex: 1;">
@@ -1218,14 +1188,12 @@
             </div>
           </div>
 
-          <!-- Hidden Member ID -->
           <input type="hidden" id="quickPayMemberId" value="">
 
-          <!-- If opened without pre-selected member, allow changing -->
           <div class="form-group" id="quickPayMemberSelectGroup" style="display: none;">
             <label class="form-label">Pilih Anggota Lab <span style="color: var(--kredit-red);">*</span></label>
             <select id="quickPayMemberSelect" class="form-control">
-              <!-- Dynamically populated -->
+
             </select>
           </div>
 
@@ -1250,8 +1218,7 @@
               <span id="quickPaySuggestedAmount" style="font-size: 0.76rem; color: var(--slate-500); font-weight: 600;"></span>
             </div>
             <input type="number" id="quickPayAmount" class="form-control" placeholder="20000" min="1000" step="1000" required style="font-family: 'JetBrains Mono', monospace; font-size: 1.05rem; font-weight: 800; color: var(--slate-900);">
-            
-            <!-- Quick Chips -->
+
             <div class="quick-pay-chips">
               <button type="button" class="quick-pay-chip full-pay" id="btnQuickPayFull" onclick="applyQuickAmount('full')">Bayar Lunas</button>
               <button type="button" class="quick-pay-chip" onclick="applyQuickAmount(10000)">Rp 10.000</button>
@@ -1276,7 +1243,6 @@
     </div>
   </div>
 
-  <!-- ================= MODAL: CATAT PEMASUKAN LAIN / HIBAH ================= -->
   <div id="modalAddIncome" class="modal-overlay">
     <div class="modal-box" style="max-width: 520px; width: 95%;">
       <div class="modal-header">
@@ -1329,7 +1295,6 @@
     </div>
   </div>
 
-  <!-- ================= MODAL: CATAT PENGELUARAN / BELANJA OPERASIONAL ================= -->
   <div id="modalAddExpense" class="modal-overlay">
     <div class="modal-box" style="max-width: 540px; width: 95%;">
       <div class="modal-header">
@@ -1396,7 +1361,6 @@
     </div>
   </div>
 
-  <!-- ================= MODAL: PRATINJAU & CETAK PDF LAPORAN KEUANGAN ================= -->
   <div id="modalFinancePdfPreview" class="modal-overlay">
     <div class="modal-box" style="max-width: 920px; width: 96%; max-height: 92vh; display: flex; flex-direction: column;">
       <div class="modal-header no-print">
@@ -1419,14 +1383,14 @@
       </div>
 
       <div class="modal-body" style="padding: 1.5rem; overflow-y: auto; background: #f8fafc;">
-        <!-- Container that gets printed -->
+
         <div id="printableFinanceReportArea" class="printable-finance-paper">
-          <!-- Content rendered dynamically by renderFinancePdfPreview() -->
+
         </div>
       </div>
 
       <div class="modal-footer no-print" style="padding: 0.85rem 1.5rem; background: #ffffff; border-top: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center;">
-        <span style="font-size: 0.8rem; color: var(--slate-500);">Tip: Gunakan opsi <strong>"Save as PDF"</strong> pada dialog cetak peramban.</span>
+        <span style="font-size: 0.8rem; color: var(--slate-500);">Petunjuk: Gunakan opsi <strong>"Simpan sebagai PDF"</strong> pada menu cetak peramban.</span>
         <div style="display: flex; gap: 0.5rem;">
           <button type="button" class="btn btn-outline" data-close-modal>Tutup</button>
           <button type="button" class="btn btn-primary" onclick="printFinanceReport()" style="display: inline-flex; align-items: center; gap: 0.4rem; font-weight: 800;">
@@ -1438,7 +1402,6 @@
     </div>
   </div>
 
-  <!-- ================= MODAL: CUSTOM ALERT / NOTIFIKASI POPUP ================= -->
   <div id="modalAppAlert" class="modal-overlay" style="z-index: 100000;">
     <div class="modal-box app-alert-box" style="max-width: 440px; width: 92%; border-radius: 16px; overflow: hidden; border: 1px solid var(--border-color); box-shadow: 0 20px 45px -10px rgba(15, 23, 42, 0.25); background: #ffffff;">
       <div class="modal-header" style="padding: 1.15rem 1.35rem 0.85rem 1.35rem; border-bottom: none; display: flex; align-items: center; justify-content: space-between;">
